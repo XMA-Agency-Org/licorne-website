@@ -359,17 +359,17 @@ function CTAOption5() {
           className="mt-16 pt-12 border-t border-white/10"
         >
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-white/50">
-            <a href="tel:+971000000000" className="font-secondary flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="tel:+971586595257" className="font-secondary flex items-center gap-2 hover:text-primary transition-colors">
               <Phone className="w-4 h-4" />
-              +971 00 000 0000
+              +971 58 659 5257
             </a>
-            <a href="mailto:hello@licorne.ae" className="font-secondary flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="mailto:info@licorne.ae" className="font-secondary flex items-center gap-2 hover:text-primary transition-colors">
               <Mail className="w-4 h-4" />
-              hello@licorne.ae
+              info@licorne.ae
             </a>
             <span className="font-secondary flex items-center gap-2">
               <MapPin className="w-4 h-4" />
-              Dubai, UAE
+              Office 622, Fairmont Dubai, Sheikh Zayed Road, Trade Centre 1, Dubai, UAE
             </span>
           </div>
         </motion.div>

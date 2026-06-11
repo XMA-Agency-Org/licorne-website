@@ -38,10 +38,10 @@ export default function ContactPage() {
                     Email
                   </p>
                   <Link
-                    href="mailto:hello@licorne.ae"
+                    href="mailto:info@licorne.ae"
                     className="text-lg text-secondary hover:text-primary transition-colors"
                   >
-                    hello@licorne.ae
+                    info@licorne.ae
                   </Link>
                 </div>
                 <div>
@@ -49,10 +49,10 @@ export default function ContactPage() {
                     Phone
                   </p>
                   <Link
-                    href="tel:+971000000000"
+                    href="tel:+971586595257"
                     className="text-lg text-secondary hover:text-primary transition-colors"
                   >
-                    +971 00 000 0000
+                    +971 58 659 5257
                   </Link>
                 </div>
                 <div>
@@ -60,7 +60,8 @@ export default function ContactPage() {
                     Office
                   </p>
                   <p className="text-lg text-secondary">
-                    Dubai, United Arab Emirates
+                    Office 622, Fairmont Dubai, Sheikh Zayed Road, Trade Centre
+                    1, Dubai, United Arab Emirates
                   </p>
                 </div>
               </div>
