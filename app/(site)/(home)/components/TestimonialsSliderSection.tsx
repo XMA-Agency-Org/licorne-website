@@ -2,49 +2,31 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Quote } from "lucide-react";
 import { ScrollVelocityContainer, ScrollVelocityRow } from "@/components/ui/ScrollVelocity";
 
 const testimonials = [
   {
     text: "Licorne made what I thought would be a months-long ordeal into a two-week process. Clear communication, no surprises, and my company was up and running faster than I expected.",
     author: "Marcus Chen",
-    location: "Tech Founder, Singapore",
-    image:
-      "https://cdn.prod.website-files.com/67b4265e6628451a28bef3a9/67b43f2ce38e4ea89bc13c0e_image%207.png",
+    position: "Founder, Technology Consultancy",
   },
   {
     text: "I'd tried to set up on my own and hit wall after wall. Licorne untangled everything in days. Worth every dirham.",
     author: "Sarah Mitchell",
-    location: "E-commerce, United Kingdom",
-    image:
-      "https://cdn.prod.website-files.com/67b4265e6628451a28bef3a9/67b4391fd5f25f6f99522318_image%2019.png",
+    position: "Director, E-commerce Business",
   },
   {
     text: "The free zone advice alone saved me from making an expensive mistake. They actually listened to my business model before recommending anything.",
     author: "Ahmed Al-Rashid",
-    location: "Consulting, Saudi Arabia",
-    image:
-      "https://cdn.prod.website-files.com/67b4265e6628451a28bef3a9/67b4457f9b7c6c2bcb00db18_image%208.png",
+    position: "Managing Partner, Consulting Firm",
   },
   {
-    text: "Professional, responsive, and they actually answer their phone. After dealing with other setup companies, that alone was refreshing.",
-    author: "Julia Fernandez",
-    location: "Import/Export, Spain",
-    image:
-      "https://cdn.prod.website-files.com/67b4265e6628451a28bef3a9/67b4391fd5f25f6f99522318_image%2019.png",
-  },
-  {
-    text: "Bank account opening is where most people struggle. Licorne got me approved on the first attempt — they knew exactly what documentation the bank wanted.",
+    text: "Bank account opening is where most people struggle. Licorne got me approved on the first attempt because they knew exactly what documentation the bank wanted.",
     author: "David Okonkwo",
-    location: "Fintech, Nigeria",
-    image:
-      "https://cdn.prod.website-files.com/67b4265e6628451a28bef3a9/67b43f00b5c6759c33719a28_image%205.png",
+    position: "CEO, Fintech Startup",
   },
 ];
-
-// Split testimonials into two rows
-const testimonialRowA = testimonials.slice(0, 3);
-const testimonialRowB = testimonials.slice(3);
 
 const StarIcon = () => (
   <svg
@@ -76,23 +58,13 @@ const TestimonialCard = ({
         ))}
       </div>
     )}
+    <Quote className="w-6 h-6 text-primary mb-4" />
     <div className="text-text-secondary mb-6 leading-relaxed text-wrap">
       {testimonial.text}
     </div>
-    <div className="flex items-center">
-      <Image
-        src={testimonial.image}
-        alt={testimonial.author}
-        width={48}
-        height={48}
-        className="w-12 h-12 object-cover mr-4 rounded-full border border-border-strong object-top"
-      />
-      <div>
-        <div className="font-semibold text-secondary">
-          {testimonial.author}
-        </div>
-        <div className="text-sm text-text-muted">{testimonial.location}</div>
-      </div>
+    <div>
+      <div className="font-semibold text-secondary">{testimonial.author}</div>
+      <div className="text-sm text-text-muted">{testimonial.position}</div>
     </div>
   </div>
 );
@@ -128,23 +100,9 @@ export function TestimonialsSliderSection() {
       {/* Smooth Scroll Velocity Slider */}
       <div className="mb-16 relative">
         <ScrollVelocityContainer className="w-full">
-          {/* First row - scrolls right */}
           <ScrollVelocityRow baseVelocity={3} direction={1} className="py-4">
-            {testimonialRowA.map((testimonial, index) => (
-              <TestimonialCard
-                key={`row-a-${index}`}
-                testimonial={testimonial}
-              />
-            ))}
-          </ScrollVelocityRow>
-
-          {/* Second row - scrolls left */}
-          <ScrollVelocityRow baseVelocity={3} direction={-1} className="py-4">
-            {testimonialRowB.map((testimonial, index) => (
-              <TestimonialCard
-                key={`row-b-${index}`}
-                testimonial={testimonial}
-              />
+            {testimonials.map((testimonial) => (
+              <TestimonialCard key={testimonial.author} testimonial={testimonial} />
             ))}
           </ScrollVelocityRow>
         </ScrollVelocityContainer>

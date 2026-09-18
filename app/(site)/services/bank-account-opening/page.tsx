@@ -31,7 +31,7 @@ const serviceData = {
     { value: "85%", label: "First-application approval rate" },
     { value: "12+", label: "Partner banks in UAE" },
     { value: "2-4", label: "Weeks typical timeline" },
-    { value: "500+", label: "Accounts opened" },
+    { value: "50+", label: "Accounts opened" },
   ],
   deliverables: {
     eyebrow: "What's Included",

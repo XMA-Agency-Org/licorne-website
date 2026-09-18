@@ -19,7 +19,7 @@ const ctaContent = {
 };
 
 const stats = [
-  { value: "500+", label: "Companies Formed" },
+  { value: "50+", label: "Companies Formed" },
   { value: "98%", label: "Success Rate" },
   { value: "72h", label: "Average Setup" },
 ];

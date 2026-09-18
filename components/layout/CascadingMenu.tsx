@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ChevronRight } from "lucide-react"
+import { ArrowRight, ChevronRight } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { NavigationMenuLink } from "@/components/ui/navigation-menu"
 import { SERVICES, SERVICE_CATEGORIES } from "@/lib/navigation"
@@ -10,11 +10,11 @@ import { cn } from "@/lib/utils"
 
 export function CascadingMenu() {
   const [activeCategory, setActiveCategory] = useState(SERVICE_CATEGORIES[0])
-  const activeServices = SERVICES[activeCategory].items
+  const activeGroup = SERVICES[activeCategory]
 
   return (
-    <div className="flex min-h-[280px] w-[600px] bg-white">
-      <div className="w-[200px] border-r border-base-200 py-2">
+    <div className="flex min-h-[300px] w-[640px] bg-white">
+      <div className="w-[220px] border-r border-base-200 py-2">
         {SERVICE_CATEGORIES.map((category) => (
           <button
             key={category}
@@ -37,7 +37,7 @@ export function CascadingMenu() {
         ))}
       </div>
 
-      <div className="w-[400px] p-4">
+      <div className="w-[420px] p-4">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}
@@ -47,7 +47,21 @@ export function CascadingMenu() {
             transition={{ duration: 0.15, ease: "easeOut" }}
             className="space-y-1"
           >
-            {activeServices.map((service) => (
+            <NavigationMenuLink asChild>
+              <Link
+                href={activeGroup.href}
+                className="group mb-2 block rounded-sm px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-base-50"
+              >
+                <span className="flex items-center gap-2">
+                  All {activeCategory}
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
+                <span className="mt-1 block font-normal text-xs leading-relaxed text-text-secondary">
+                  {activeGroup.description}
+                </span>
+              </Link>
+            </NavigationMenuLink>
+            {activeGroup.items.map((service) => (
               <NavigationMenuLink key={service.href} asChild>
                 <Link
                   href={service.href}

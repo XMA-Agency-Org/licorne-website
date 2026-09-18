@@ -11,6 +11,7 @@ interface Service {
 }
 
 interface ServiceCategorySectionProps {
+  id?: string;
   eyebrow: string;
   title: string;
   titleAccent?: string;
@@ -29,6 +30,7 @@ const containerVariants: Variants = {
 };
 
 export function ServiceCategorySection({
+  id,
   eyebrow,
   title,
   titleAccent,
@@ -40,7 +42,8 @@ export function ServiceCategorySection({
 
   return (
     <section
-      className={`py-24 lg:py-32 relative overflow-hidden ${
+      id={id}
+      className={`py-24 lg:py-32 relative overflow-hidden scroll-mt-20 ${
         isDark ? "bg-secondary" : "bg-background"
       }`}
     >

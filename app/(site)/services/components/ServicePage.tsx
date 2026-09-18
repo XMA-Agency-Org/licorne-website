@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 
 interface ServiceItem {
+  id?: string;
   title: string;
   description: string;
 }
@@ -276,7 +277,9 @@ export function ServicePage({
           >
             {deliverables.items.map((item) => (
               <AnimatedGridItem key={item.title}>
-                <div className="group h-full bg-white/10 backdrop-blur-sm border border-white/20 rounded-sm p-8 hover:bg-white/20 transition-all duration-300">
+                <div
+                  id={item.id}
+                  className="group h-full scroll-mt-28 bg-white/10 backdrop-blur-sm border border-white/20 rounded-sm p-8 hover:bg-white/20 transition-all duration-300">
                   <h3 className="text-2xl text-white mb-3">{item.title}</h3>
                   <p className="font-secondary text-white/80 leading-relaxed">
                     {item.description}

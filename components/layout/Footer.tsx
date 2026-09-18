@@ -1,25 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import LicorneLogo from "@/public/Licorne Logo-bg-removed.jpeg";
+import { COMPANY_SETUP, SERVICES, SERVICE_CATEGORIES } from "@/lib/navigation";
 
-const FOOTER_SERVICES = {
-  "Company Formation": [
-    { label: "Mainland Company Setup", href: "/services/mainland-company-setup" },
-    { label: "Free Zone Company Setup", href: "/services/free-zone-company-setup" },
-    { label: "Trade License Services", href: "/services/trade-license" },
-  ],
-  "Visas & Immigration": [
-    { label: "Visa & Immigration", href: "/services/visa-immigration" },
-    { label: "Golden Visa UAE", href: "/services/golden-visa" },
-  ],
-  "Business Services": [
-    { label: "PRO & Government Services", href: "/services/pro-government-services" },
-    { label: "Bank Account Opening", href: "/services/bank-account-opening" },
-    { label: "Office Solutions", href: "/services/office-solutions" },
-    { label: "Accounting & VAT", href: "/services/accounting-vat" },
-    { label: "Company Liquidation", href: "/services/company-liquidation" },
-  ],
-};
+const FOOTER_SERVICE_GROUPS = [
+  { title: "Company Setup", links: COMPANY_SETUP.items },
+  {
+    title: "Services",
+    links: SERVICE_CATEGORIES.map((category) => ({
+      label: category,
+      href: SERVICES[category].href,
+    })),
+  },
+  { title: "Visa & Immigration", links: SERVICES["Visa & Immigration"].items },
+  { title: "Finance & Banking", links: SERVICES["Finance & Banking"].items },
+];
 
 const FOOTER_RESOURCES = [
   { label: "Free Zone Comparison", href: "/free-zones" },
@@ -65,7 +60,7 @@ export function Footer() {
   return (
     <footer className="bg-secondary">
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-8 lg:gap-6">
           <div className="col-span-2 md:col-span-3 lg:col-span-2">
             <Link href="/" className="inline-block mb-6">
               <div className="h-12 relative">
@@ -93,21 +88,16 @@ export function Footer() {
             </Link>
           </div>
 
-          <FooterLinkGroup title="Company Formation" links={FOOTER_SERVICES["Company Formation"]} />
+          {FOOTER_SERVICE_GROUPS.map((group) => (
+            <FooterLinkGroup key={group.title} title={group.title} links={group.links} />
+          ))}
 
           <div>
-            <FooterLinkGroup
-              title="Visas"
-              links={FOOTER_SERVICES["Visas & Immigration"]}
-            />
+            <FooterLinkGroup title="Resources" links={FOOTER_RESOURCES} />
             <div className="mt-8">
-              <FooterLinkGroup title="Resources" links={FOOTER_RESOURCES} />
+              <FooterLinkGroup title="Company" links={FOOTER_COMPANY} />
             </div>
           </div>
-
-          <FooterLinkGroup title="Business Services" links={FOOTER_SERVICES["Business Services"]} />
-
-          <FooterLinkGroup title="Company" links={FOOTER_COMPANY} />
         </div>
       </div>
 

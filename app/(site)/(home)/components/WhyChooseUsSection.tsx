@@ -26,13 +26,13 @@ const features = [
     icon: BoltIcon,
     title: 'Speed That Matters',
     description:
-      'Most setups completed in days, not weeks. We know the shortcuts because we\'ve done this hundreds of times.',
+      'Most setups completed in days, not weeks. We know the shortcuts because we\'ve done this many times.',
   },
   {
     icon: BuildingOffice2Icon,
     title: 'Every Free Zone',
     description:
-      'We work with 40+ free zones. We\'ll match you to the one that fits your business, not push you toward our favorite.',
+      'We work with 10+ free zones. We\'ll match you to the one that fits your business, not push you toward our favorite.',
   },
   {
     icon: ArrowsPointingOutIcon,

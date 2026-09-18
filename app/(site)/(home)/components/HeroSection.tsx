@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import HeroImage from "@/public/hero-background.png";
+import HeroImage from "@/public/images/heroes/home-skyline.jpg";
 
 export function HeroSection() {
   return (
@@ -9,7 +9,7 @@ export function HeroSection() {
       <div className="absolute h-full w-full">
         <Image
           src={HeroImage}
-          alt="Hero Background"
+          alt="Dubai skyline at golden hour"
           className="absolute inset-0 w-full h-full object-cover object-center"
           priority
         />

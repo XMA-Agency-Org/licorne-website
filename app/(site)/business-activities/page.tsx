@@ -430,7 +430,7 @@ export default function BusinessActivitiesPage() {
               Get Activity Recommendation
             </Link>
             <Link
-              href="/services/trade-license"
+              href="/services/license-services"
               className="inline-block px-8 py-4 bg-transparent border border-white text-white font-medium rounded-sm hover:bg-white hover:text-secondary transition-colors"
             >
               Trade License Services

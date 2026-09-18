@@ -1,54 +1,62 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import { COMPANY_SETUP, SERVICES } from "@/lib/navigation";
 
 const services = [
   {
     number: "One",
-    title: "Mainland Company Setup",
+    title: "Company Setup",
     description:
-      "Establish your LLC in Dubai mainland with full access to the local market. We handle sponsor arrangements, trade license selection, and all government approvals — you just sign.",
-    image: "/Licorne Logo.jpeg",
-    href: "/services/mainland-company-setup",
+      "Mainland, free zone or offshore. We recommend the right jurisdiction for your business model, then handle licensing, approvals and registration so you can start trading.",
+    href: "/services#company-setup",
+    subItems: COMPANY_SETUP.items,
   },
   {
     number: "Two",
-    title: "Free Zone Company Setup",
+    title: "License Services",
     description:
-      "100% foreign ownership, tax advantages, and simplified regulations. We help you choose the right free zone for your industry and manage the entire registration process.",
-    image: "/Licorne Logo.jpeg",
-    href: "/services/free-zone-company-setup",
+      "Renewal, modification, cancellation and freezing of your trade license. One team tracks your dates, processes amendments and keeps you compliant year after year.",
+    href: SERVICES["License Services"].href,
+    subItems: SERVICES["License Services"].items,
   },
   {
     number: "Three",
     title: "Visa & Immigration",
     description:
-      "Residence visas, investor visas, and work permits for you and your team. We navigate the immigration process so your people can start working without delays.",
-    image: "/Licorne Logo.jpeg",
-    href: "/services/visa-immigration",
+      "Residence, dependent, remote work, golden and freelance visas for you, your family and your team. From entry permit to Emirates ID, we manage every step.",
+    href: SERVICES["Visa & Immigration"].href,
+    subItems: SERVICES["Visa & Immigration"].items,
   },
   {
     number: "Four",
-    title: "PRO & Government Services",
+    title: "Finance & Banking",
     description:
-      "Document attestation, Emirates ID, medical tests, license renewals — the ongoing paperwork that keeps your business compliant. We handle it all.",
-    image: "/Licorne Logo.jpeg",
-    href: "/services/pro-government-services",
+      "Corporate bank account opening, corporate tax registration and ongoing bookkeeping and VAT. Your finances set up correctly from day one and kept compliant.",
+    href: SERVICES["Finance & Banking"].href,
+    subItems: SERVICES["Finance & Banking"].items,
   },
   {
     number: "Five",
-    title: "Bank Account Opening",
+    title: "PRO & Government Services",
     description:
-      "The trickiest part of Dubai setup — made manageable. We prepare documentation, connect you with the right banks, and guide you through compliance for successful account opening.",
-    image: "/Licorne Logo.jpeg",
-    href: "/services/bank-account-opening",
+      "Document attestation, Emirates ID, medical tests, office solutions and government liaison. The ongoing paperwork that keeps your business running, handled.",
+    href: SERVICES["PRO & Government Services"].href,
+    subItems: SERVICES["PRO & Government Services"].items,
+  },
+  {
+    number: "Six",
+    title: "Notary Services",
+    description:
+      "Power of attorney, will registration, MOA drafting and amendments, and share transfer agreements. Drafted, translated and notarised correctly the first time.",
+    href: SERVICES["Notary Services"].href,
+    subItems: SERVICES["Notary Services"].items,
   },
 ];
 
 export function ServicesSection() {
   return (
     <section id="services" className="py-24 lg:py-32 relative overflow-hidden">
-      {/* Background texture */}
       <div className="absolute inset-0 opacity-5">
         <div
           className="absolute inset-0"
@@ -67,36 +75,57 @@ export function ServicesSection() {
         </div>
 
         <div className="grid gap-6">
-          {services.map((service, index) => (
+          {services.map((service) => (
             <div
-              key={index}
-              className="group pb-8 px-4 hover:shadow-2xl transition-all duration-300 border-b text-primary hover:border-transparent cursor-pointer relative overflow-hidden"
+              key={service.title}
+              className="group pb-8 px-4 border-b border-primary transition-all duration-300 hover:shadow-2xl hover:border-transparent relative overflow-hidden"
             >
-              <div className="flex">
-                <span className="text-base-950 text-lg pr-8 my-auto tracking-wider">
+              <div className="flex gap-6 lg:gap-8">
+                <span className="text-base-950 text-lg my-auto tracking-wider shrink-0 w-12">
                   {service.number}
                 </span>
-                <div>
-                  <div className="flex items-start justify-between mb-6 relative z-10">
-                    <div className="flex-1">
-                      <h3 className="text-4xl text-secondary mt-2">
-                        {service.title}
-                      </h3>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 mb-6 leading-relaxed max-w-2xl">
+                <div className="flex-1 min-w-0">
+                  <Link href={service.href} className="block">
+                    <h3 className="text-3xl lg:text-4xl text-secondary mt-2 mb-4 group-hover:text-primary transition-colors">
+                      {service.title}
+                    </h3>
+                  </Link>
+                  <p className="text-text-secondary mb-5 leading-relaxed max-w-2xl">
                     {service.description}
                   </p>
+                  <ul className="flex flex-wrap gap-2">
+                    {service.subItems.map((item) => (
+                      <li key={item.href}>
+                        <Link
+                          href={item.href}
+                          className="inline-block rounded-sm border border-base-200 bg-white px-3 py-1.5 text-sm text-secondary transition-colors hover:border-primary hover:text-primary"
+                        >
+                          {item.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
                 <Link
                   href={service.href}
-                  className="inline-flex items-center text-primary ml-auto hover:text-secondary transition-colors font-medium group"
+                  aria-label={`Learn more about ${service.title}`}
+                  className="hidden sm:inline-flex items-center self-center text-primary hover:text-secondary transition-colors"
                 >
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Link
+            href="/services"
+            className="inline-flex items-center px-8 py-4 font-medium transition-all duration-300 rounded-sm bg-primary text-white hover:bg-secondary"
+          >
+            View All Services
+            <ArrowRight className="ml-2 w-5 h-5" />
+          </Link>
         </div>
       </div>
     </section>

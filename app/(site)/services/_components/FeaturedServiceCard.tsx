@@ -49,7 +49,7 @@ function FeaturedServiceCard({
             alt={title}
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             fill
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
 
           <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/60 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-300" />
@@ -63,7 +63,7 @@ function FeaturedServiceCard({
           )}
 
           <div className="absolute bottom-0 left-0 right-0 p-8 lg:p-10">
-            <h3 className="text-3xl lg:text-4xl text-white mb-4 group-hover:text-primary transition-colors duration-300">
+            <h3 className="text-3xl text-white mb-4 group-hover:text-primary transition-colors duration-300">
               {title}
             </h3>
             <p className="font-secondary text-white/80 leading-relaxed mb-6 line-clamp-3">
@@ -94,7 +94,7 @@ export function FeaturedServicesSection({
   services,
 }: FeaturedServicesSectionProps) {
   return (
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {services.map((service, index) => (
         <FeaturedServiceCard
           key={service.title}

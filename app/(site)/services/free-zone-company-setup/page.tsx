@@ -14,7 +14,7 @@ const serviceData = {
     eyebrow: "About Free Zone Companies",
     title: "Full ownership and simplified setup in UAE free zones",
     description:
-      "Dubai's 30+ free zones offer distinct advantages: complete foreign ownership without a local sponsor, corporate tax exemptions (0% for qualifying income), 100% repatriation of profits, and simplified import/export procedures. Each free zone caters to specific industries — from DMCC for commodities trading to Dubai Internet City for tech companies, Dubai Healthcare City for medical practices, and JAFZA for logistics. The key is matching your business to the right zone. We've helped hundreds of entrepreneurs navigate this choice, avoiding costly mistakes like registering in zones that don't support their activities or overpaying for packages they don't need. Free zones are ideal for businesses focused on international trade, remote services, or industries with dedicated zones.",
+      "Dubai's 30+ free zones offer distinct advantages: complete foreign ownership without a local sponsor, corporate tax exemptions (0% for qualifying income), 100% repatriation of profits, and simplified import/export procedures. Each free zone caters to specific industries — from DMCC for commodities trading to Dubai Internet City for tech companies, Dubai Healthcare City for medical practices, and JAFZA for logistics. The key is matching your business to the right zone. We've helped many entrepreneurs navigate this choice, avoiding costly mistakes like registering in zones that don't support their activities or overpaying for packages they don't need. Free zones are ideal for businesses focused on international trade, remote services, or industries with dedicated zones.",
     highlights: [
       "100% foreign ownership — no local sponsor required",
       "0% corporate tax on qualifying income",
@@ -25,10 +25,10 @@ const serviceData = {
     ],
     expectationTitle: "Our free zone expertise",
     expectationDescription:
-      "We work with 40+ free zones across the UAE and match you to the one that fits your business model, budget, and long-term plans.",
+      "We work with 10+ free zones across the UAE and match you to the one that fits your business model, budget, and long-term plans.",
   },
   stats: [
-    { value: "40+", label: "Free zones covered" },
+    { value: "10+", label: "Free zones covered" },
     { value: "3-5", label: "Days average setup time" },
     { value: "0%", label: "Corporate tax for qualifying FZ income" },
     { value: "100%", label: "Foreign ownership" },
@@ -149,7 +149,7 @@ const serviceData = {
 export const metadata: Metadata = {
   title: "Dubai Free Zone Company Setup | 100% Ownership | Licorne",
   description:
-    "Set up your free zone company in Dubai with 100% foreign ownership. Compare 40+ free zones, 0% corporate tax, 3-5 day setup. Expert guidance on DMCC, DIFC, JAFZA, and more.",
+    "Set up your free zone company in Dubai with 100% foreign ownership. Compare 10+ free zones, 0% corporate tax, 3-5 day setup. Expert guidance on DMCC, DIFC, JAFZA, and more.",
   keywords: [
     "dubai free zone company",
     "free zone business setup dubai",
@@ -161,7 +161,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dubai Free Zone Company Setup | Licorne Business Setup",
     description:
-      "100% foreign ownership, 0% tax, streamlined setup. Compare 40+ UAE free zones and find your perfect match.",
+      "100% foreign ownership, 0% tax, streamlined setup. Compare 10+ UAE free zones and find your perfect match.",
     type: "website",
   },
 };

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Licorne Website is a business services website for a Dubai-based company formation and PRO services firm. Built with Next.js 16, React 19, Tailwind CSS 4, and Motion (Framer Motion).
+Licorne Website is a business services website for a Dubai-based company formation and PRO services firm. Built with Next.js 16.3, React 19, Tailwind CSS 4, and Motion (Framer Motion).
 
 ## Commands
 
@@ -28,13 +28,18 @@ npm run start    # Start production server
 
 ```
 app/
-├── (home)/components/    # Homepage-specific sections (Hero, Services, FAQ, etc.)
-├── services/
-│   ├── _components/      # Private reusable service components (AnimatedSection, ProcessTimeline, FAQAccordion)
-│   ├── components/       # Shared service components (ServicePage, ServiceCta)
-│   └── [service-name]/   # Individual service pages using ServicePage template
-├── [page-name]/          # Static pages (about, contact, faq, etc.)
-└── layout.tsx            # Root layout with Header/Footer
+├── (site)/               # Public site — layout.tsx renders Header/Footer
+│   ├── (home)/components/    # Homepage-specific sections (Hero, Services, FAQ, etc.)
+│   ├── services/
+│   │   ├── _components/      # Private reusable service components (AnimatedSection, ProcessTimeline, FAQAccordion)
+│   │   ├── components/       # Shared service components (ServicePage, ServiceCta)
+│   │   └── [service-name]/   # Individual service pages using ServicePage template
+│   └── [page-name]/          # Static pages (about, contact, faq, etc.)
+├── (studio)/studio/[[...tool]]/  # Embedded Sanity Studio at /studio (bare layout, no Header/Footer)
+└── layout.tsx            # Root layout: fonts + globals only
+
+sanity/                   # CMS: env.ts, schemas/, structure.ts, lib/ (client, image, queries)
+sanity.config.ts          # Studio config; sanity.cli.ts for the CLI
 
 components/
 ├── ui/                   # Base UI primitives (Button, Card, Sheet, NavigationMenu)
@@ -56,6 +61,10 @@ Custom color palette defined in `app/globals.css` using Tailwind 4 `@theme`:
 
 Utility classes: `glass`, `gradient-text`, `bg-dots-pattern`, `card-elevated`, `card-premium`
 
+### Navigation Model
+
+`lib/navigation.ts` is the single source of truth for the service taxonomy (`COMPANY_SETUP` + `SERVICES` categories). Header, cascading menu, footer and the homepage `ServicesSection` all derive from it. See `docs/services-page.md` for the category list and anchor conventions, and `docs/homepage.md` for homepage section notes.
+
 ### Service Pages Pattern
 
 Service pages use a data-driven template (`app/services/components/ServicePage.tsx`). Each service page exports a config object with:
@@ -69,10 +78,30 @@ Service pages use a data-driven template (`app/services/components/ServicePage.t
 
 ### Path Aliases
 
-`@/*` maps to project root (configured in `tsconfig.json`).
+`@/*` maps to project root (configured in `tsconfig.json`). Route-group folders are part of the path: `@/app/(site)/services/components/ServicePage`.
+
+### CMS
+
+Sanity Studio is embedded at `/studio`. Versions: `sanity`/`@sanity/vision`/`groq` 6.x, `next-sanity` 13.x (requires React ≥19.2 — React is on 19.3). See `docs/cms.md` for files, env vars and setup. Use `bun`, not npm.
+
+## Content Rules
+
+- Approved stats: 50+ companies formed, 10+ free zones, 98% first-time approvals, 72h average setup. Never use the old 500+/40+ or "hundreds of" claims.
+- Testimonials: name + position + quote, no photos.
+- Grouped services (license renewal/modification/cancellation/freezing; the five notary documents) live as anchored sections on one page, not separate routes.
 
 ## Styling Rules
 
 - **Instrument_Serif font**: Never apply bold/font-weight styles.
 - Use semantic color tokens (`text-secondary`, `bg-primary`, `border-base-200`) over raw colors.
 - Components use the `cn()` utility from `@/lib/utils` for conditional classes.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

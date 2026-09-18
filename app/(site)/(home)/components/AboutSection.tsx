@@ -7,7 +7,7 @@ const ABOUT_CONFIG = {
   tag: "About Licorne",
   title: "We Make Dubai ",
   titleSpan: "Accessible",
-  description: "Setting up a business in Dubai shouldn't feel like navigating a maze. Licorne streamlines every step — from choosing the right structure to securing your visas and opening your bank account. We've guided hundreds of entrepreneurs through the process, turning what seems complex into something remarkably simple.",
+  description: "Setting up a business in Dubai shouldn't feel like navigating a maze. Licorne streamlines every step — from choosing the right structure to securing your visas and opening your bank account. We've guided many entrepreneurs through the process, turning what seems complex into something remarkably simple.",
   button: {
     text: "Get Started",
     href: "/contact"
@@ -21,8 +21,8 @@ const ABOUT_CONFIG = {
 };
 
 const STATS = [
-  { value: "500+", label: "Companies Formed" },
-  { value: "40+", label: "Free Zones Covered" },
+  { value: "50+", label: "Companies Formed" },
+  { value: "10+", label: "Free Zones Covered" },
   { value: "98%", label: "First-Time Approvals" },
   { value: "72h", label: "Average Setup Time" }
 ];

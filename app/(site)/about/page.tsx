@@ -59,8 +59,8 @@ const values: Value[] = [
 ];
 
 const stats = [
-  { value: "500+", label: "Companies formed" },
-  { value: "40+", label: "Free zones covered" },
+  { value: "50+", label: "Companies formed" },
+  { value: "10+", label: "Free zones covered" },
   { value: "98%", label: "First-time approval rate" },
   { value: "72h", label: "Average license turnaround" },
 ];
@@ -80,7 +80,7 @@ const milestones = [
   },
   {
     year: "Today",
-    title: "Trusted by hundreds of businesses",
+    title: "Trusted by a growing client base",
     description:
       "From solo founders to multinational expansions, we've helped businesses of all sizes establish and operate in Dubai successfully.",
   },
@@ -89,7 +89,7 @@ const milestones = [
 export const metadata = {
   title: "About Us | Licorne Business Setup Dubai",
   description:
-    "Learn about Licorne — Dubai's trusted business setup partner. 500+ companies formed, 40+ free zones covered. We make starting a business in Dubai simple.",
+    "Learn about Licorne — Dubai's trusted business setup partner. 50+ companies formed, 10+ free zones covered. We make starting a business in Dubai simple.",
 };
 
 export default function AboutPage() {

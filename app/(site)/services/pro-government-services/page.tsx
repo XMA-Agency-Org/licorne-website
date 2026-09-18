@@ -28,7 +28,7 @@ const serviceData = {
       "Dedicated PRO executives who process your requests same-day. No more missed deadlines, queue waiting, or compliance gaps.",
   },
   stats: [
-    { value: "500+", label: "Monthly transactions processed" },
+    { value: "100+", label: "Transactions processed monthly" },
     { value: "Same-day", label: "Standard service turnaround" },
     { value: "99%", label: "On-time renewal rate" },
     { value: "15+", label: "Government departments covered" },

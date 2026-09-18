@@ -11,7 +11,7 @@ The services section consists of two main page types:
 ### File Structure
 
 ```
-app/services/
+app/(site)/services/
 ├── _components/           # Private components (not routes)
 │   ├── AnimatedSection.tsx
 │   ├── AnimatedCounter.tsx
@@ -155,25 +155,29 @@ Visual timeline showing process steps.
 
 ## Service Categories
 
-Services are organized into logical categories:
+The single source of truth for the service taxonomy is `lib/navigation.ts`. The header (`Header.tsx`, `CascadingMenu.tsx`), footer, and the homepage `ServicesSection` all read from it — add or move a service there, not in each component.
 
-1. **Company Formation** (Featured)
-   - Mainland Company Setup
-   - Free Zone Company Setup
+`COMPANY_SETUP` is a top-level header dropdown, separate from Services:
 
-2. **Visas & Immigration**
-   - Visa & Immigration
-   - Golden Visa UAE
+- Mainland Company Setup — `/services/mainland-company-setup`
+- Free Zone Company Setup — `/services/free-zone-company-setup`
+- Offshore Company Setup — `/services/offshore-company-setup`
 
-3. **Business Operations**
-   - PRO & Government Services
-   - Bank Account Opening
-   - Office Solutions
-   - Accounting & VAT
+`SERVICES` categories (each has an overview `href` plus `items`):
 
-4. **Licensing & Changes**
-   - Trade License Services
-   - Company Liquidation
+1. **License Services** — one page, `/services/license-services`, with anchored sections `#renewal`, `#modification`, `#cancellation`, `#freezing`
+2. **Visa & Immigration** — overview at `/services/visa-immigration`; separate pages for Residence, Dependent, Remote Work, Golden and Freelance visas
+3. **Finance & Banking** — Bank Account Opening, Corporate Tax Registration, Bookkeeping & VAT (`/services/accounting-vat`)
+4. **PRO & Government Services** — PRO & Government Services, Office Solutions, Company Liquidation
+5. **Notary Services** — one page, `/services/notary-services`, with anchored sections `#power-of-attorney`, `#will-registration`, `#memorandum-of-association`, `#amendment-to-moa`, `#share-transfer-agreement`
+
+Anchored sections are the `deliverables.items[].id` of the `ServicePage` config; the card gets `id` + `scroll-mt-28`. `ServiceCategorySection` accepts an `id` so `/services#finance-banking` style links land on the right block.
+
+`/services/trade-license` permanently redirects to `/services/license-services` (see `next.config.ts`).
+
+## Site-wide Stats
+
+Client-approved numbers (from the Sept 2026 review): **50+** companies formed, **10+** free zones covered, **98%** first-time approvals, **72h** average setup time. Do not reintroduce the earlier 500+/40+ figures or "hundreds of" phrasing.
 
 ## Styling Conventions
 
@@ -204,7 +208,8 @@ Services are organized into logical categories:
 
 ## Adding New Services
 
-1. Create new folder: `app/services/[new-service]/`
-2. Create `page.tsx` with service data
-3. Use `ServicePage` template component
-4. Add service to appropriate category in `app/services/page.tsx`
+1. Create new folder: `app/(site)/services/[new-service]/`
+2. Create `page.tsx` with service data and `metadata`
+3. Use `ServicePage` template component; reuse an existing hero image from `public/images/heroes/` until a dedicated one exists
+4. Add the service to the right category in `lib/navigation.ts` (header, footer and homepage pick it up automatically)
+5. Add a card to the matching category in `app/(site)/services/page.tsx`

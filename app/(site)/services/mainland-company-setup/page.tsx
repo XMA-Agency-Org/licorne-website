@@ -28,7 +28,7 @@ const serviceData = {
       "A streamlined setup process with clear timelines, transparent pricing, and dedicated support from consultation through your first year of operation.",
   },
   stats: [
-    { value: "500+", label: "Mainland companies formed" },
+    { value: "50+", label: "Companies formed" },
     { value: "5-10", label: "Days average setup time" },
     { value: "2,000+", label: "Activity types available" },
     { value: "100%", label: "Foreign ownership eligible" },

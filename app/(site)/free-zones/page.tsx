@@ -153,7 +153,7 @@ const comparisonFactors = [
 ];
 
 export const metadata: Metadata = {
-  title: "Dubai Free Zone Comparison Guide 2024 | Compare 40+ Free Zones | Licorne",
+  title: "Dubai Free Zone Comparison Guide 2024 | Compare Dubai Free Zones | Licorne",
   description:
     "Compare Dubai free zones side by side. DMCC, IFZA, DIFC, JAFZA, and more. Costs, visa quotas, activities, and which free zone is best for your business type.",
   keywords: [
@@ -167,7 +167,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dubai Free Zone Comparison Guide | Licorne Business Setup",
     description:
-      "Compare 40+ Dubai free zones. Find the best free zone for your business based on cost, activities, and visa requirements.",
+      "Compare Dubai free zones. Find the best free zone for your business based on cost, activities, and visa requirements.",
     type: "website",
   },
 };
@@ -178,7 +178,7 @@ export default function FreeZonesPage() {
       <PageHero
         eyebrow="Free Zone Guide"
         title="Dubai Free Zone Comparison Guide"
-        description="40+ free zones, each with different costs, activities, and benefits. This guide helps you understand the options and find the right fit for your business."
+        description="Dozens of free zones, each with different costs, activities, and benefits. This guide helps you understand the options and find the right fit for your business."
         image={HeroImage}
         imageAlt="Dubai free zones guide"
         height="medium"

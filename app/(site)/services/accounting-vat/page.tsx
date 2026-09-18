@@ -4,11 +4,11 @@ import { Metadata } from "next";
 
 const serviceData = {
   hero: {
-    title: "Accounting & VAT Services Dubai",
+    title: "Bookkeeping & VAT Services Dubai",
     description:
       "VAT registration, bookkeeping, financial reporting, and tax compliance. We keep your numbers accurate and your business compliant with UAE regulations — so you can focus on growth.",
     image: HeroImage,
-    imageAlt: "Accounting and VAT services Dubai",
+    imageAlt: "Bookkeeping and VAT services Dubai",
   },
   overview: {
     eyebrow: "About Our Accounting Services",
@@ -147,7 +147,7 @@ const serviceData = {
 };
 
 export const metadata: Metadata = {
-  title: "Accounting & VAT Services Dubai | Tax Compliance | Licorne",
+  title: "Bookkeeping & VAT Services Dubai | Tax Compliance | Licorne",
   description:
     "Professional accounting and VAT services in Dubai. VAT registration, return filing, bookkeeping, and financial reporting. 100% on-time filing rate, zero FTA penalties.",
   keywords: [
@@ -159,7 +159,7 @@ export const metadata: Metadata = {
     "financial reporting dubai",
   ],
   openGraph: {
-    title: "Accounting & VAT Services Dubai | Licorne Business Setup",
+    title: "Bookkeeping & VAT Services Dubai | Licorne Business Setup",
     description:
       "Expert accounting and VAT compliance services. Registration, filing, bookkeeping, and financial reporting for UAE businesses.",
     type: "website",
