@@ -65,7 +65,7 @@ SANITY_API_TOKEN=        # "nextjs-server" editor token (Manage → API → Toke
 SANITY_REVALIDATE_SECRET=
 ```
 
-CORS origins registered: `http://localhost:3000`, `https://licorne-website.vercel.app`. Add the production domain when known.
+CORS origins registered: `http://localhost:3000`, `http://localhost:3001`, `https://licorne-website.vercel.app`. Vercel project `licorne-website` (XMA Team) is linked via `.vercel/` and has all five env vars in production, preview and development. Add the production domain when known.
 
 ## Adding a service page
 
