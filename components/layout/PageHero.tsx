@@ -16,7 +16,7 @@ type CtaButton = {
 type PageHeroProps = {
   title: string
   description: string
-  image: StaticImageData
+  image: StaticImageData | string
   imageAlt?: string
   eyebrow?: string
   height?: HeroHeight
@@ -56,7 +56,7 @@ export function PageHero({
         fill
         className="object-cover"
         priority
-        placeholder="blur"
+        placeholder={typeof image === "string" ? "empty" : "blur"}
       />
       <div className="absolute inset-0 bg-secondary/60" />
 

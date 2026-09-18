@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import type { HomepageFaq } from "../_types/homepage";
 
-const faqs = [
+const DEFAULT_FAQS = [
   {
     question: "What's the difference between mainland and free zone?",
     answer:
@@ -32,8 +33,13 @@ const faqs = [
   },
 ];
 
-export function FAQSection() {
+export function FAQSection({ faq }: { faq: HomepageFaq }) {
   const [activeAccordion, setActiveAccordion] = useState<number | null>(null);
+  const items = (faq?.items ?? []).filter(
+    (item): item is { question: string; answer: string } =>
+      Boolean(item.question && item.answer),
+  );
+  const faqs = items.length ? items : DEFAULT_FAQS;
 
   return (
     <section className="py-24 lg:py-32 relative overflow-hidden">
@@ -49,9 +55,9 @@ export function FAQSection() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <Eyebrow>FAQ</Eyebrow>
+          <Eyebrow>{faq?.eyebrow ?? "FAQ"}</Eyebrow>
           <h2 className="text-4xl lg:text-5xl text-secondary mt-3 max-w-3xl mx-auto leading-tight">
-            Frequently Asked Questions
+            {faq?.title ?? "Frequently Asked Questions"}
           </h2>
         </div>
 

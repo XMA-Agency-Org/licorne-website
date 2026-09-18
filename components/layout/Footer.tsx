@@ -1,34 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import LicorneLogo from "@/public/Licorne Logo-bg-removed.jpeg";
-import { COMPANY_SETUP, SERVICES, SERVICE_CATEGORIES } from "@/lib/navigation";
-
-const FOOTER_SERVICE_GROUPS = [
-  { title: "Company Setup", links: COMPANY_SETUP.items },
-  {
-    title: "Services",
-    links: SERVICE_CATEGORIES.map((category) => ({
-      label: category,
-      href: SERVICES[category].href,
-    })),
-  },
-  { title: "Visa & Immigration", links: SERVICES["Visa & Immigration"].items },
-  { title: "Finance & Banking", links: SERVICES["Finance & Banking"].items },
-];
-
-const FOOTER_RESOURCES = [
-  { label: "Free Zone Comparison", href: "/free-zones" },
-  { label: "Cost Guide", href: "/cost-guide" },
-  { label: "Business Activities", href: "/business-activities" },
-  { label: "How It Works", href: "/how-it-works" },
-];
-
-const FOOTER_COMPANY = [
-  { label: "About Us", href: "/about" },
-  { label: "Contact Us", href: "/contact" },
-  { label: "FAQ", href: "/faq" },
-  { label: "All Services", href: "/services" },
-];
+import type { SiteNavigation } from "@/lib/navigation";
 
 function FooterLinkGroup({
   title,
@@ -56,7 +29,20 @@ function FooterLinkGroup({
   );
 }
 
-export function Footer() {
+export function Footer({ navigation }: { navigation: SiteNavigation }) {
+  const { companySetup, serviceCategories, resourceLinks, footer } = navigation;
+  const visaCategory = serviceCategories.find((c) => c.title === "Visa & Immigration");
+  const financeCategory = serviceCategories.find((c) => c.title === "Finance & Banking");
+  const serviceGroups = [
+    { title: companySetup.title, links: companySetup.items },
+    {
+      title: "Services",
+      links: serviceCategories.map(({ title, href }) => ({ label: title, href })),
+    },
+    ...(visaCategory ? [{ title: visaCategory.title, links: visaCategory.items }] : []),
+    ...(financeCategory ? [{ title: financeCategory.title, links: financeCategory.items }] : []),
+  ];
+
   return (
     <footer className="bg-secondary">
       <div className="max-w-7xl mx-auto px-6 py-16">
@@ -76,9 +62,7 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-white/70 text-sm leading-relaxed max-w-sm mb-6">
-              Dubai&apos;s trusted business setup partner. We help entrepreneurs
-              and companies establish and operate in the UAE with clarity,
-              efficiency, and confidence.
+              {footer.description}
             </p>
             <Link
               href="/contact"
@@ -88,14 +72,14 @@ export function Footer() {
             </Link>
           </div>
 
-          {FOOTER_SERVICE_GROUPS.map((group) => (
+          {serviceGroups.map((group) => (
             <FooterLinkGroup key={group.title} title={group.title} links={group.links} />
           ))}
 
           <div>
-            <FooterLinkGroup title="Resources" links={FOOTER_RESOURCES} />
+            <FooterLinkGroup title="Resources" links={resourceLinks} />
             <div className="mt-8">
-              <FooterLinkGroup title="Company" links={FOOTER_COMPANY} />
+              <FooterLinkGroup title="Company" links={footer.companyLinks} />
             </div>
           </div>
         </div>

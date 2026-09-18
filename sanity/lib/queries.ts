@@ -1,100 +1,51 @@
-import groq from "groq";
+import { defineQuery } from "next-sanity";
 
-export const homepageQuery = groq`*[_type == "homepage"][0]{
-  hero,
-  about{
-    ...,
-    image{..., asset->}
-  },
-  services,
-  whyChooseUs,
-  testimonials[]->{
-    _id, author, role, location, text, avatar{asset->}, featured
-  },
-  team{
-    eyebrow,
-    title,
-    members[]->{
-      _id, name, role, image{asset->}, bio, order
-    }
-  },
-  faq,
-  cta,
+const imageProjection = `{ ..., asset->{ _id, url, metadata { lqip, dimensions } } }`;
+const linkProjection = `{ label, href, description }`;
+
+export const navigationQuery = defineQuery(`*[_type == "navigation"][0]{
+  companySetup{ href, description, items[]${linkProjection} },
+  serviceCategories[]{ title, href, description, items[]${linkProjection} },
+  resourceLinks[]${linkProjection},
+  footer{ description, companyLinks[]${linkProjection} }
+}`);
+
+export const homepageQuery = defineQuery(`*[_type == "homepage"][0]{
+  hero{ ..., bgImage${imageProjection} },
+  about{ ..., image${imageProjection} },
+  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]${linkProjection} } },
+  testimonials[]->{ _id, author, position, text },
+  team{ eyebrow, title, members[]->{ _id, name, role, image${imageProjection} } },
+  faq{ eyebrow, title, items[]{ question, answer } },
   seo
-}`;
+}`);
 
-export const serviceBySlugQuery = groq`*[_type == "service" && slug.current == $slug][0]{
+export const serviceSlugsQuery = defineQuery(`*[_type == "service" && defined(slug.current)]{
+  "slug": slug.current
+}`);
+
+export const serviceBySlugQuery = defineQuery(`*[_type == "service" && slug.current == $slug][0]{
   title,
-  slug,
-  hero{
-    ...,
-    image{..., asset->}
-  },
-  overview,
-  stats,
-  deliverables,
-  process,
-  faqs,
-  cta,
-  seo
-}`;
+  "slug": slug.current,
+  category,
+  hero{ title, description, imageAlt, image${imageProjection} },
+  overview{ eyebrow, title, description, highlights, expectationTitle, expectationDescription },
+  stats[]{ value, label },
+  deliverables{ eyebrow, title, items[]{ anchor, title, description } },
+  process{ eyebrow, title, items[]{ step, title, description } },
+  faqs{ eyebrow, title, items[]{ question, answer } },
+  cta{ title, description, primaryLabel, primaryHref, secondaryLabel, secondaryHref },
+  seo{ title, description, keywords, ogImage${imageProjection} }
+}`);
 
-export const allServicesQuery = groq`*[_type == "service"] | order(title asc){
-  _id, title, slug, hero{title, description}
-}`;
-
-export const navigationQuery = groq`*[_type == "navigation"][0]{
-  header,
-  footer
-}`;
-
-export const siteSettingsQuery = groq`*[_type == "siteSettings"][0]{
-  companyName, tagline, description, logo{asset->}, contact, social, defaultSeo
-}`;
-
-export const aboutPageQuery = groq`*[_type == "aboutPage"][0]{
-  hero{
-    ...,
-    image{..., asset->}
-  },
-  story,
-  whyClients,
-  stats,
-  journey,
-  values,
-  commitment,
-  cta,
-  seo
-}`;
-
-export const contactPageQuery = groq`*[_type == "contactPage"][0]{
-  hero{
-    ...,
-    image{..., asset->}
-  },
-  contactMethods,
-  serviceOptions,
-  seo
-}`;
-
-export const howItWorksPageQuery = groq`*[_type == "howItWorksPage"][0]{
-  hero{
-    ...,
-    image{..., asset->}
-  },
-  processSteps,
-  faqs,
-  seo
-}`;
-
-export const faqPageQuery = groq`*[_type == "faqCategory"] | order(order asc){
-  _id, category, slug, questions, order
-}`;
-
-export const allTestimonialsQuery = groq`*[_type == "testimonial"] | order(_createdAt desc){
-  _id, author, role, location, text, avatar{asset->}, featured
-}`;
-
-export const allTeamMembersQuery = groq`*[_type == "teamMember"] | order(order asc){
-  _id, name, role, image{asset->}, bio, order
-}`;
+export const aboutPageQuery = defineQuery(`*[_type == "aboutPage"][0]{
+  hero{ eyebrow, title, description, imageAlt, image${imageProjection} },
+  story{ eyebrow, title, paragraphs[]{ text } },
+  whyClients{ title, description, items },
+  stats[]{ value, label },
+  journey{ eyebrow, title, milestones[]{ year, title, description } },
+  values{ eyebrow, title, items[]{ title, description } },
+  commitment{ eyebrow, title, paragraphs[]{ text } },
+  cta{ title, description, primaryLabel, primaryHref, secondaryLabel, secondaryHref },
+  seo{ title, description }
+}`);

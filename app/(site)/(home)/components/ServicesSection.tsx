@@ -2,8 +2,17 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { COMPANY_SETUP, SERVICES } from "@/lib/navigation";
+import type { HomepageServices } from "../_types/homepage";
 
-const services = [
+type ServiceRow = {
+  number: string;
+  title: string;
+  description: string;
+  href: string;
+  subItems: Array<{ label: string; href: string }>;
+};
+
+const DEFAULT_SERVICES: ServiceRow[] = [
   {
     number: "One",
     title: "Company Setup",
@@ -54,7 +63,27 @@ const services = [
   },
 ];
 
-export function ServicesSection() {
+function toRows(services: HomepageServices): ServiceRow[] {
+  const rows = (services?.items ?? [])
+    .filter((item) => item.title && item.href)
+    .map((item, index) => ({
+      number: item.number ?? String(index + 1),
+      title: item.title as string,
+      description: item.description ?? "",
+      href: item.href as string,
+      subItems: (item.subItems ?? []).filter(
+        (link): link is { label: string; href: string; description: string | null } =>
+          Boolean(link.label && link.href),
+      ),
+    }));
+  return rows.length ? rows : DEFAULT_SERVICES;
+}
+
+export function ServicesSection({ services }: { services: HomepageServices }) {
+  const rows = toRows(services);
+  const eyebrow = services?.eyebrow ?? "Our Services";
+  const title = services?.title ?? "Everything You Need to Launch in Dubai";
+
   return (
     <section id="services" className="py-24 lg:py-32 relative overflow-hidden">
       <div className="absolute inset-0 opacity-5">
@@ -68,14 +97,14 @@ export function ServicesSection() {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
-          <Eyebrow>Our Services</Eyebrow>
+          <Eyebrow>{eyebrow}</Eyebrow>
           <h2 className="text-4xl lg:text-5xl text-secondary mt-3 max-w-3xl mx-auto leading-tight">
-            Everything You Need to Launch in Dubai
+            {title}
           </h2>
         </div>
 
         <div className="grid gap-6">
-          {services.map((service) => (
+          {rows.map((service) => (
             <div
               key={service.title}
               className="group pb-8 px-4 border-b border-primary transition-all duration-300 hover:shadow-2xl hover:border-transparent relative overflow-hidden"

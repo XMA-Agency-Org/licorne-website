@@ -21,7 +21,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet"
 import { CascadingMenu } from "@/components/layout/CascadingMenu"
-import { COMPANY_SETUP, SERVICES, RESOURCES } from "@/lib/navigation"
+import type { SiteNavigation } from "@/lib/navigation"
 import { cn } from "@/lib/utils"
 import LicorneLogo from "@/public/Licorne Logo-bg-removed.jpeg"
 
@@ -84,7 +84,8 @@ function MobileAccordion({
   )
 }
 
-export function Header() {
+export function Header({ navigation }: { navigation: SiteNavigation }) {
+  const { companySetup, serviceCategories, resourceLinks } = navigation
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
@@ -151,22 +152,21 @@ export function Header() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="w-[360px] p-3 bg-white space-y-1">
-                    {COMPANY_SETUP.items.map((item) => (
+                    {companySetup.items.map((item) => (
                       <li key={item.href}>
                         <NavigationMenuLink asChild>
                           <Link
                             href={item.href}
-                            className="group flex items-start gap-3 rounded-sm px-3 py-2.5 transition-colors hover:bg-base-50"
+                            className="group block rounded-sm px-3 py-2.5 transition-colors hover:bg-base-50"
                           >
-                            <item.icon className="mt-0.5 size-4 shrink-0 text-primary" />
-                            <span>
-                              <span className="block text-sm font-medium text-secondary group-hover:text-primary">
-                                {item.label}
-                              </span>
+                            <span className="block text-sm font-medium text-secondary group-hover:text-primary">
+                              {item.label}
+                            </span>
+                            {item.description && (
                               <span className="block text-xs text-text-secondary">
                                 {item.description}
                               </span>
-                            </span>
+                            )}
                           </Link>
                         </NavigationMenuLink>
                       </li>
@@ -182,7 +182,7 @@ export function Header() {
                   </Link>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <CascadingMenu />
+                  <CascadingMenu categories={serviceCategories} />
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
@@ -192,7 +192,7 @@ export function Header() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="w-[300px] p-3 bg-white space-y-1">
-                    {RESOURCES.map((item) => (
+                    {resourceLinks.map((item) => (
                       <li key={item.href}>
                         <NavigationMenuLink asChild>
                           <Link
@@ -271,7 +271,7 @@ export function Header() {
 
                 <MobileAccordion title="Company Setup">
                   <div className="pl-4 space-y-1">
-                    {COMPANY_SETUP.items.map((item) => (
+                    {companySetup.items.map((item) => (
                       <MobileNavItem
                         key={item.href}
                         href={item.href}
@@ -285,13 +285,13 @@ export function Header() {
 
                 <MobileAccordion title="Services">
                   <div className="space-y-4 pl-4">
-                    {Object.entries(SERVICES).map(([category, { href, items }]) => (
-                      <div key={category}>
+                    {serviceCategories.map(({ title, href, items }) => (
+                      <div key={title}>
                         <MobileNavItem
                           href={href}
                           className="text-xs font-semibold text-primary uppercase tracking-wider mb-2 py-0"
                         >
-                          {category}
+                          {title}
                         </MobileNavItem>
                         <div className="space-y-1">
                           {items.map((item) => (
@@ -311,7 +311,7 @@ export function Header() {
 
                 <MobileAccordion title="Resources">
                   <div className="pl-4 space-y-1">
-                    {RESOURCES.map((item) => (
+                    {resourceLinks.map((item) => (
                       <MobileNavItem
                         key={item.href}
                         href={item.href}

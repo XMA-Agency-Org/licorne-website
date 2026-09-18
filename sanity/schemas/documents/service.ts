@@ -22,6 +22,28 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "category",
+      title: "Category",
+      type: "string",
+      options: {
+        list: [
+          { title: "Company Setup", value: "company-setup" },
+          { title: "License Services", value: "license-services" },
+          { title: "Visa & Immigration", value: "visa-immigration" },
+          { title: "Finance & Banking", value: "finance-banking" },
+          { title: "PRO & Government Services", value: "pro-government" },
+          { title: "Notary Services", value: "notary-services" },
+        ],
+        layout: "dropdown",
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "order",
+      title: "Order within category",
+      type: "number",
+    }),
+    defineField({
       name: "hero",
       title: "Hero",
       type: "object",
@@ -174,9 +196,20 @@ export default defineType({
       type: "seo",
     }),
   ],
+  orderings: [
+    {
+      title: "Category, then order",
+      name: "categoryOrder",
+      by: [
+        { field: "category", direction: "asc" },
+        { field: "order", direction: "asc" },
+      ],
+    },
+  ],
   preview: {
     select: {
       title: "title",
+      subtitle: "category",
       media: "hero.image",
     },
   },

@@ -4,8 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Quote } from "lucide-react";
 import { ScrollVelocityContainer, ScrollVelocityRow } from "@/components/ui/ScrollVelocity";
+import type { HomepageTestimonials } from "../_types/homepage";
 
-const testimonials = [
+type Testimonial = { author: string; position: string; text: string };
+
+const DEFAULT_TESTIMONIALS: Testimonial[] = [
   {
     text: "Licorne made what I thought would be a months-long ordeal into a two-week process. Clear communication, no surprises, and my company was up and running faster than I expected.",
     author: "Marcus Chen",
@@ -47,7 +50,7 @@ const TestimonialCard = ({
   testimonial,
   showStars = false,
 }: {
-  testimonial: (typeof testimonials)[0];
+  testimonial: Testimonial;
   showStars?: boolean;
 }) => (
   <div className="bg-surface-subtle p-6 mx-3 min-w-[400px] max-w-sm shadow-lg border border-border-strong flex-shrink-0">
@@ -69,7 +72,20 @@ const TestimonialCard = ({
   </div>
 );
 
-export function TestimonialsSliderSection() {
+export function TestimonialsSliderSection({
+  testimonials,
+}: {
+  testimonials: HomepageTestimonials;
+}) {
+  const cmsTestimonials = (testimonials ?? [])
+    .filter((item) => item.author && item.text)
+    .map((item) => ({
+      author: item.author as string,
+      position: item.position ?? "",
+      text: item.text as string,
+    }));
+  const items = cmsTestimonials.length ? cmsTestimonials : DEFAULT_TESTIMONIALS;
+
   return (
     <section className="py-24 lg:py-32 relative overflow-hidden">
 
@@ -101,7 +117,7 @@ export function TestimonialsSliderSection() {
       <div className="mb-16 relative">
         <ScrollVelocityContainer className="w-full">
           <ScrollVelocityRow baseVelocity={3} direction={1} className="py-4">
-            {testimonials.map((testimonial) => (
+            {items.map((testimonial) => (
               <TestimonialCard key={testimonial.author} testimonial={testimonial} />
             ))}
           </ScrollVelocityRow>

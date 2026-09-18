@@ -7,43 +7,35 @@ export default defineType({
   fields: [
     defineField({
       name: "author",
-      title: "Author",
+      title: "Name",
       type: "string",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "role",
-      title: "Role",
-      type: "string",
-    }),
-    defineField({
-      name: "location",
-      title: "Location",
+      name: "position",
+      title: "Position",
+      description: "Role and company, e.g. Founder, Technology Consultancy",
       type: "string",
     }),
     defineField({
       name: "text",
-      title: "Text",
+      title: "Testimonial",
       type: "text",
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "avatar",
-      title: "Avatar",
-      type: "image",
-      options: { hotspot: true },
+      name: "order",
+      title: "Order",
+      type: "number",
     }),
-    defineField({
-      name: "featured",
-      title: "Featured",
-      type: "boolean",
-      initialValue: false,
-    }),
+  ],
+  orderings: [
+    { title: "Order", name: "orderAsc", by: [{ field: "order", direction: "asc" }] },
   ],
   preview: {
     select: {
       title: "author",
-      subtitle: "role",
+      subtitle: "position",
     },
   },
 });

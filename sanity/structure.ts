@@ -1,21 +1,17 @@
 import type { StructureResolver } from "sanity/structure"
 
-const singletonTypes = ["homepage", "aboutPage", "contactPage", "howItWorksPage", "siteSettings", "navigation"]
+const singletonTypes = ["homepage", "aboutPage", "navigation"]
 
 const singletonItems = [
   { type: "homepage", title: "Homepage" },
   { type: "aboutPage", title: "About Page" },
-  { type: "contactPage", title: "Contact Page" },
-  { type: "howItWorksPage", title: "How It Works" },
-  { type: "siteSettings", title: "Site Settings" },
-  { type: "navigation", title: "Navigation" },
+  { type: "navigation", title: "Navigation & Menus" },
 ]
 
 const documentTypeItems = [
-  { type: "service", title: "Services" },
+  { type: "service", title: "Service Pages" },
   { type: "testimonial", title: "Testimonials" },
   { type: "teamMember", title: "Team Members" },
-  { type: "faqCategory", title: "FAQ Categories" },
 ]
 
 export const structure: StructureResolver = (S) =>

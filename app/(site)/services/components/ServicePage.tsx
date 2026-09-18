@@ -33,11 +33,11 @@ interface FaqItem {
   answer: string;
 }
 
-interface ServicePageProps {
+export interface ServicePageProps {
   hero: {
     title: string;
     description: string;
-    image: StaticImageData;
+    image: StaticImageData | string;
     imageAlt: string;
   };
   overview: {
@@ -126,7 +126,9 @@ export function ServicePage({
           <Image
             src={hero.image}
             alt={hero.imageAlt}
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
             priority
           />
           <div className="absolute inset-0 bg-secondary/60" />

@@ -1,88 +1,81 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import { Eyebrow } from "@/components/ui/Eyebrow";
+import DefaultAboutImage from "@/public/images/heroes/about.jpg";
+import { urlFor } from "@/sanity/lib/image";
+import type { HomepageAbout } from "../_types/homepage";
 
-const ABOUT_CONFIG = {
-  tag: "About Licorne",
-  title: "We Make Dubai ",
+const DEFAULT_ABOUT = {
+  eyebrow: "About Licorne",
+  title: "We Make Dubai",
   titleSpan: "Accessible",
-  description: "Setting up a business in Dubai shouldn't feel like navigating a maze. Licorne streamlines every step — from choosing the right structure to securing your visas and opening your bank account. We've guided many entrepreneurs through the process, turning what seems complex into something remarkably simple.",
-  button: {
-    text: "Get Started",
-    href: "/contact"
-  },
-  image: {
-    src: "https://cdn.prod.website-files.com/67aec585824eadef2eebc54f/67aeed40002c626c25144224_image-1.png",
-    alt: "Dubai business district",
-    width: 940,
-    height: 626
-  }
+  description:
+    "Setting up a business in Dubai shouldn't feel like navigating a maze. Licorne streamlines every step — from choosing the right structure to securing your visas and opening your bank account. We've guided many entrepreneurs through the process, turning what seems complex into something remarkably simple.",
+  buttonText: "Get Started",
+  buttonHref: "/contact",
 };
 
-const STATS = [
+const DEFAULT_STATS = [
   { value: "50+", label: "Companies Formed" },
   { value: "10+", label: "Free Zones Covered" },
   { value: "98%", label: "First-Time Approvals" },
-  { value: "72h", label: "Average Setup Time" }
+  { value: "72h", label: "Average Setup Time" },
 ];
 
-export function AboutSection() {
+export function AboutSection({ about }: { about: HomepageAbout }) {
+  const content = { ...DEFAULT_ABOUT, ...about };
+  const stats = about?.stats?.length ? about.stats : DEFAULT_STATS;
+  const image = about?.image?.asset
+    ? urlFor(about.image).width(940).height(626).url()
+    : DefaultAboutImage;
+
   return (
     <section className="py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-6">
-        {/* Main Content Wrapper */}
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
-          {/* Left Content */}
           <div>
-            {/* Header Section */}
             <div className="mb-8">
-              <Eyebrow className="mb-6">{ABOUT_CONFIG.tag}</Eyebrow>
+              <Eyebrow className="mb-6">{content.eyebrow}</Eyebrow>
               <h2 className="text-4xl lg:text-5xl mt-3 mb-6 leading-tight text-secondary">
-                {ABOUT_CONFIG.title}
-                <span className="text-primary">
-                  {ABOUT_CONFIG.titleSpan}
-                </span>
+                {content.title} <span className="text-primary">{content.titleSpan}</span>
               </h2>
             </div>
 
-            {/* Bottom Content */}
             <div>
               <p className="mb-8 text-lg leading-relaxed text-text-secondary">
-                {ABOUT_CONFIG.description}
+                {content.description}
               </p>
 
               <Link
-                href={ABOUT_CONFIG.button.href}
+                href={content.buttonHref}
                 className="inline-flex items-center px-8 py-4 font-medium transition-all duration-300 rounded-sm bg-primary text-white hover:bg-secondary"
               >
-                {ABOUT_CONFIG.button.text}
+                {content.buttonText}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </div>
           </div>
 
-          {/* Right Image */}
-          <div className="relative">
+          <div className="relative aspect-[3/2]">
             <Image
-              src={ABOUT_CONFIG.image.src}
-              alt={ABOUT_CONFIG.image.alt}
-              width={ABOUT_CONFIG.image.width}
-              height={ABOUT_CONFIG.image.height}
-              className="w-full h-auto"
+              src={image}
+              alt="Dubai business district"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover rounded-sm"
               priority
             />
           </div>
         </div>
 
-        {/* Stats Section */}
-        <div className="flex justify-start items-center w-full">
-          {STATS.map((stat, index) => (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 w-full">
+          {stats.map((stat) => (
             <div
-              key={index}
-              className="flex flex-col justify-start items-start flex-1 gap-4 border-l border-primary pl-5"
+              key={stat.label}
+              className="flex flex-col justify-start items-start gap-4 border-l border-primary pl-5"
             >
-              <div className="text-4xl lg:text-8xl text-text font-primary font-extralight">
+              <div className="text-4xl lg:text-7xl text-text font-primary font-extralight">
                 {stat.value}
               </div>
               <div className="text-sm font-medium text-text-secondary">

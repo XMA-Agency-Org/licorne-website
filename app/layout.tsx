@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
+import { SanityLive } from "@/sanity/lib/live";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,9 +15,9 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Licorne Business Setup Dubai | Company Formation & PRO Services",
+  title: "Licorne Corporate Services | Company Formation & PRO Services Dubai",
   description:
-    "Dubai's trusted business setup partner. Mainland & free zone company formation, visa services, PRO services, and bank account opening. 500+ companies formed.",
+    "Dubai's trusted business setup partner. Mainland, free zone and offshore company formation, license services, visas, banking, tax and notary services.",
 };
 
 export default function RootLayout({
@@ -30,6 +31,7 @@ export default function RootLayout({
         className={`${inter.variable} ${instrumentSerif.variable} font-secondary antialiased`}
       >
         {children}
+        <SanityLive />
       </body>
     </html>
   );

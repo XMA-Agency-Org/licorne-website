@@ -3,8 +3,8 @@
 ## Overview
 
 The services section consists of two main page types:
-1. **Services Index Page** (`/services`) - Overview of all services with category grouping
-2. **Individual Service Pages** (`/services/[slug]`) - Detailed service information
+1. **Services Index Page** (`/services`) - Static overview of all services with category grouping
+2. **Individual Service Pages** (`/services/[slug]`) - Rendered from Sanity `service` documents (see `docs/cms.md`)
 
 ## Architecture
 
@@ -24,8 +24,9 @@ app/(site)/services/
 ├── components/            # Shared service components
 │   ├── ServicePage.tsx    # Template for individual services
 │   └── ServiceCta.tsx     # CTA section component
-├── [service-slug]/        # Individual service pages
-│   └── page.tsx
+├── [slug]/                # CMS-driven service page
+│   ├── page.tsx
+│   └── _lib/toServicePageProps.ts
 ├── layout.tsx             # Services layout with metadata
 └── page.tsx               # Services index page
 ```
@@ -208,8 +209,4 @@ Client-approved numbers (from the Sept 2026 review): **50+** companies formed, *
 
 ## Adding New Services
 
-1. Create new folder: `app/(site)/services/[new-service]/`
-2. Create `page.tsx` with service data and `metadata`
-3. Use `ServicePage` template component; reuse an existing hero image from `public/images/heroes/` until a dedicated one exists
-4. Add the service to the right category in `lib/navigation.ts` (header, footer and homepage pick it up automatically)
-5. Add a card to the matching category in `app/(site)/services/page.tsx`
+Preferred: create the document in Studio → Service Pages, then add links in Navigation & Menus. Via code: add `sanity/seed/services/<slug>.ts`, register it in `sanity/seed/services/index.ts`, run `bun run seed`, and update `lib/navigation.ts` (static fallback) plus the `/services` index cards.

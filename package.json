@@ -8,12 +8,15 @@
     "start": "next start",
     "lint": "eslint",
     "knip": "knip",
-    "knip:fix": "knip --fix --allow-remove-files"
+    "knip:fix": "knip --fix --allow-remove-files",
+    "typegen": "sanity schema extract --path sanity/schema.json --force && sanity typegen generate",
+    "seed": "bun --env-file=.env.local run scripts/seed-sanity.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-navigation-menu": "^1.2.14",
+    "@sanity/client": "^8.6.2",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^6.15.0",
     "axios": "^1.13.4",

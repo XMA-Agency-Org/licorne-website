@@ -9,10 +9,11 @@ Licorne Website is a business services website for a Dubai-based company formati
 ## Commands
 
 ```bash
-npm run dev      # Development server with Turbopack (http://localhost:3000)
-npm run build    # Production build with Turbopack
-npm run lint     # ESLint
-npm run start    # Start production server
+bun run dev      # Development server with Turbopack (http://localhost:3000)
+bun run build    # Production build with Turbopack
+bun run lint     # ESLint
+bun run typegen  # Extract Sanity schema + regenerate sanity/types.generated.ts (run after schema/query changes)
+bun run seed     # Upsert seed content + hero images into the Sanity dataset
 ```
 
 ## Architecture
@@ -33,12 +34,14 @@ app/
 │   ├── services/
 │   │   ├── _components/      # Private reusable service components (AnimatedSection, ProcessTimeline, FAQAccordion)
 │   │   ├── components/       # Shared service components (ServicePage, ServiceCta)
-│   │   └── [service-name]/   # Individual service pages using ServicePage template
+│   │   ├── [slug]/           # CMS-driven service page (Sanity `service` docs) + _lib/toServicePageProps
+│   │   └── page.tsx          # Static services index
 │   └── [page-name]/          # Static pages (about, contact, faq, etc.)
 ├── (studio)/studio/[[...tool]]/  # Embedded Sanity Studio at /studio (bare layout, no Header/Footer)
 └── layout.tsx            # Root layout: fonts + globals only
 
-sanity/                   # CMS: env.ts, schemas/, structure.ts, lib/ (client, image, queries)
+sanity/                   # CMS: env.ts, schemas/, structure.ts, lib/ (client, live, image, queries), seed/, types.generated.ts
+app/api/revalidate/       # Sanity webhook → revalidatePath("/", "layout")
 sanity.config.ts          # Studio config; sanity.cli.ts for the CLI
 
 components/
@@ -67,7 +70,7 @@ Utility classes: `glass`, `gradient-text`, `bg-dots-pattern`, `card-elevated`, `
 
 ### Service Pages Pattern
 
-Service pages use a data-driven template (`app/services/components/ServicePage.tsx`). Each service page exports a config object with:
+Service pages are Sanity `service` documents rendered by `app/(site)/services/[slug]/page.tsx` through the `ServicePage` template. The seed source of truth for each page lives in `sanity/seed/services/<slug>.ts` with the same shape:
 - `hero`: title, description, image
 - `overview`: eyebrow, title, description, highlights
 - `stats`: value/label pairs
@@ -82,7 +85,11 @@ Service pages use a data-driven template (`app/services/components/ServicePage.t
 
 ### CMS
 
-Sanity Studio is embedded at `/studio`. Versions: `sanity`/`@sanity/vision`/`groq` 6.x, `next-sanity` 13.x (requires React ≥19.2 — React is on 19.3). See `docs/cms.md` for files, env vars and setup. Use `bun`, not npm.
+Sanity project `mxwn9exj`, Studio embedded at `/studio`. Homepage, About, Navigation, service pages, testimonials and team members are CMS-driven via `sanityFetch` (Live Content API); every section keeps a static fallback. See `docs/cms.md` for the full map, seed and webhook setup. Use `bun`, not npm.
+
+- After changing a schema or GROQ query: `bun run typegen`.
+- Content edits belong in Studio (or in `sanity/seed/` + `bun run seed`), not in components.
+- `sanity/seed/site.ts` doubles as the runtime fallback for the About page.
 
 ## Content Rules
 

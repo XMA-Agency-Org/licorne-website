@@ -10,13 +10,20 @@ export default defineType({
       type: "object",
       fields: [
         defineField({ name: "headline", type: "string" }),
-        defineField({ name: "subheadline", type: "text" }),
+        defineField({
+          name: "headlineAccent",
+          title: "Headline accent word",
+          description: "Rendered in the serif accent style after the headline",
+          type: "string",
+        }),
+        defineField({ name: "subheadline", type: "text", rows: 3 }),
         defineField({ name: "primaryCtaLabel", type: "string" }),
         defineField({ name: "primaryCtaHref", type: "string" }),
         defineField({ name: "secondaryCtaLabel", type: "string" }),
         defineField({ name: "secondaryCtaHref", type: "string" }),
         defineField({
           name: "bgImage",
+          title: "Background image",
           type: "image",
           options: { hotspot: true },
         }),
@@ -28,8 +35,8 @@ export default defineType({
       fields: [
         defineField({ name: "eyebrow", type: "string" }),
         defineField({ name: "title", type: "string" }),
-        defineField({ name: "titleSpan", type: "string" }),
-        defineField({ name: "description", type: "text" }),
+        defineField({ name: "titleSpan", title: "Title accent word", type: "string" }),
+        defineField({ name: "description", type: "text", rows: 5 }),
         defineField({ name: "buttonText", type: "string" }),
         defineField({ name: "buttonHref", type: "string" }),
         defineField({
@@ -41,6 +48,7 @@ export default defineType({
           name: "stats",
           type: "array",
           of: [defineArrayMember({ type: "stat" })],
+          validation: (rule) => rule.max(4),
         }),
       ],
     }),
@@ -56,33 +64,20 @@ export default defineType({
           of: [
             defineArrayMember({
               type: "object",
+              name: "serviceRow",
               fields: [
                 defineField({ name: "number", type: "string" }),
                 defineField({ name: "title", type: "string" }),
-                defineField({ name: "description", type: "text" }),
-                defineField({ name: "href", type: "string" }),
+                defineField({ name: "description", type: "text", rows: 3 }),
+                defineField({ name: "href", title: "Overview URL", type: "string" }),
+                defineField({
+                  name: "subItems",
+                  title: "Sub-service links",
+                  type: "array",
+                  of: [defineArrayMember({ type: "link" })],
+                }),
               ],
-            }),
-          ],
-        }),
-      ],
-    }),
-    defineField({
-      name: "whyChooseUs",
-      type: "object",
-      fields: [
-        defineField({ name: "eyebrow", type: "string" }),
-        defineField({ name: "title", type: "string" }),
-        defineField({
-          name: "items",
-          type: "array",
-          of: [
-            defineArrayMember({
-              type: "object",
-              fields: [
-                defineField({ name: "title", type: "string" }),
-                defineField({ name: "description", type: "text" }),
-              ],
+              preview: { select: { title: "title", subtitle: "number" } },
             }),
           ],
         }),
@@ -120,12 +115,11 @@ export default defineType({
       ],
     }),
     defineField({
-      name: "cta",
-      type: "cta",
-    }),
-    defineField({
       name: "seo",
       type: "seo",
     }),
   ],
+  preview: {
+    prepare: () => ({ title: "Homepage" }),
+  },
 });
