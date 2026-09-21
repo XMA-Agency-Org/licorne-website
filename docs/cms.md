@@ -12,12 +12,13 @@ Desk structure (`sanity/structure.ts`):
 
 | Item | Type | Drives |
 | --- | --- | --- |
-| Homepage | `homepage` singleton | Hero, About + stats, Services rows, Testimonials (refs), Team (refs), FAQ, SEO |
+| Form Submissions | `formSubmission` documents + `formSettings` singleton | Lead log from every website form (New leads / All) and the notification inboxes. See `docs/forms.md` |
+| Homepage | `homepage` singleton | Hero, About + stats, Services rows, Testimonials section settings (rows, speed, heading, button, hide) + testimonial refs, Team (refs, hide), FAQ (hide), SEO |
 | About Page | `aboutPage` singleton | Everything on `/about` |
 | Navigation & Menus | `navigation` singleton | Company Setup dropdown, Services cascading menu, Resources, footer columns, homepage service rows' sub-links are separate (see homepage) |
 | Service Pages | `service` documents | `/services/[slug]` — one document per page |
 | Testimonials | `testimonial` documents | Name, position, quote (no photos by client request) |
-| Team Members | `teamMember` documents | Name, role, photo; rendered with initials fallback until a photo is added |
+| Team Members | `teamMember` documents | Name, optional role, photo; rendered with initials fallback until a photo is added. Currently Muhammad Usman Butt, Umair Butt, Fahd Bouazer, Gicelle Cinco (roles pending from client) |
 
 Only wired types are registered in `sanity/schemas/index.ts`. Contact, How It Works, FAQ page, cost guide, free zones, business activities and the `/services` index remain static.
 
@@ -27,14 +28,15 @@ Only wired types are registered in `sanity/schemas/index.ts`. Contact, How It Wo
 | --- | --- |
 | `sanity.config.ts` / `sanity.cli.ts` | Studio + CLI config |
 | `sanity/env.ts` | project id, dataset, api version, studio base path |
-| `sanity/schemas/` | `objects/` (stat, faqItem, cta, processStep, deliverable, seo, link), `documents/` (service, testimonial, teamMember), `singletons/` (homepage, aboutPage, navigation) |
+| `sanity/schemas/` | `objects/` (stat, faqItem, cta, processStep, deliverable, seo, link), `documents/` (service, testimonial, teamMember, formSubmission), `singletons/` (homepage, aboutPage, navigation, formSettings) |
 | `sanity/lib/client.ts` | `next-sanity` client (CDN on, stega → `/studio`) |
 | `sanity/lib/live.ts` | `defineLive` → `sanityFetch` + `<SanityLive />` (rendered in `app/layout.tsx`) |
 | `sanity/lib/queries.ts` | `defineQuery` GROQ: navigation, homepage, service slugs, service by slug, about page |
 | `sanity/lib/image.ts` | `urlFor()` builder |
+| `sanity/lib/writeClient.ts` | Server-only write client (form submissions) |
 | `sanity/types.generated.ts` | TypeGen output — **regenerate after any schema or query change**: `bun run typegen` |
 | `sanity/seed/` | Seed content: `services/*.ts` (one per service page), `site.ts` (navigation, homepage, about, testimonials, team) |
-| `scripts/seed-sanity.ts` | `bun run seed` — uploads hero images from `public/images/heroes/` and upserts all seed content (idempotent: services by slug, testimonials by author, team by name, singletons by id) |
+| `scripts/seed-sanity.ts` | `bun run seed` uploads hero images from `public/images/heroes/` and team photos from `sanity/seed/images/team/`, then upserts all seed content. It's idempotent: services match by slug, testimonials by author, team by name, singletons by id, and team members not in the seed are removed. **A full seed replaces the homepage/about/navigation singletons and so overwrites Studio edits.** `bun run seed -- --team-only` only upserts team members and patches `homepage.team.members` |
 | `app/api/revalidate/route.ts` | Webhook target; validates `SANITY_REVALIDATE_SECRET` and revalidates the whole site |
 
 ## Data flow
@@ -50,7 +52,7 @@ Only wired types are registered in `sanity/schemas/index.ts`. Contact, How It Wo
 `sanityFetch` caches with tags; `<SanityLive />` in visitors' browsers invalidates on publish. For edits made while nobody is on the site, add a GROQ webhook in Manage → API → Webhooks:
 
 - URL: `https://<domain>/api/revalidate`
-- Trigger: create, update, delete · Filter: `_type in ["service","homepage","aboutPage","navigation","testimonial","teamMember"]`
+- Trigger: create, update, delete · Filter: `_type in ["service","homepage","aboutPage","navigation","testimonial","teamMember"]` (not `formSubmission`)
 - Projection: `{ _type, "slug": slug.current }` · Secret: value of `SANITY_REVALIDATE_SECRET`
 
 ## Environment
@@ -63,9 +65,22 @@ NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2025-01-29
 SANITY_API_TOKEN=        # "nextjs-server" editor token (Manage → API → Tokens); used by live fetch and seed
 SANITY_REVALIDATE_SECRET=
+RESEND_API_KEY=          # see docs/forms.md
+LEAD_NOTIFICATION_EMAIL=
+NEXT_PUBLIC_SITE_URL=
 ```
 
 CORS origins registered: `http://localhost:3000`, `http://localhost:3001`, `https://licorne-website.vercel.app`. Vercel project `licorne-website` (XMA Team) is linked via `.vercel/` and has all five env vars in production, preview and development. Add the production domain when known.
+
+## Homepage controls (from the Sep 18 meeting)
+
+- **Testimonials section**: number of scrolling rows (1 or 2; with 2 rows the testimonials alternate between rows and scroll in opposite directions), scroll speed (1–10), eyebrow/title/accent, button label/link, and a "Hide this section" toggle. Which testimonials appear, and in what order, comes from the `testimonials` reference list.
+- **Team / FAQ**: "Hide this section" toggle.
+- Hidden sections are skipped in `app/(site)/page.tsx`. Nothing is deleted.
+
+## SEO files
+
+`app/sitemap.ts` lists the static routes plus every `service` slug from Sanity, revalidated hourly. `app/robots.ts` disallows `/studio` and `/api`. Both use `siteUrl` from `lib/siteUrl.ts` (`NEXT_PUBLIC_SITE_URL`, fallback `https://licorne-website.vercel.app`). **Set `NEXT_PUBLIC_SITE_URL` once the production domain is live.**
 
 ## Adding a service page
 

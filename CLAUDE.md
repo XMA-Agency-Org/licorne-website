@@ -13,7 +13,8 @@ bun run dev      # Development server with Turbopack (http://localhost:3000)
 bun run build    # Production build with Turbopack
 bun run lint     # ESLint
 bun run typegen  # Extract Sanity schema + regenerate sanity/types.generated.ts (run after schema/query changes)
-bun run seed     # Upsert seed content + hero images into the Sanity dataset
+bun run seed     # Upsert seed content + images into Sanity (overwrites singletons, including Studio edits!)
+bun run seed -- --team-only  # Only upsert team members + relink homepage.team
 ```
 
 ## Architecture
@@ -50,8 +51,15 @@ components/
 ├── sections/             # Reusable page sections
 └── layout/               # Layout components (Header, Footer, Section, SectionHeading)
 
+components/forms/         # LeadForm (shared enquiry form) + service options
+components/ui/button.tsx, form-field.tsx  # CVA primitives: Button, Label, Input, Textarea, Select, FieldError
+
 lib/
-└── utils.ts              # cn() utility for className merging (clsx + tailwind-merge)
+├── utils.ts              # cn() utility for className merging (clsx + tailwind-merge)
+├── siteUrl.ts            # NEXT_PUBLIC_SITE_URL with vercel.app fallback
+└── leads/                # submitLead server action, zod schema, Resend notification
+
+app/sitemap.ts, app/robots.ts  # SEO metadata files
 ```
 
 ### Design System
@@ -91,10 +99,20 @@ Sanity project `mxwn9exj`, Studio embedded at `/studio`. Homepage, About, Naviga
 - Content edits belong in Studio (or in `sanity/seed/` + `bun run seed`), not in components.
 - `sanity/seed/site.ts` doubles as the runtime fallback for the About page.
 
+### Lead forms
+
+All three forms (homepage CTA, service CTA, /contact) render `components/forms/LeadForm`. `submitLead` saves a `formSubmission` to Sanity and then emails it through Resend. See `docs/forms.md`. The dataset is public-read, so any document holding personal data **must** use a dotted `_id` (`formSubmission.<uuid>`, `settings.formSettings`) to stay private.
+
+## Workflow
+
+- Commit and push straight to `main` (the user's decision, Sep 21 2026). Don't push `staging`.
+- Don't run `bun run build` unless asked. Verify with `bun run lint`, `bunx tsc --noEmit` and the dev server.
+- Before running a full `bun run seed`, remember it replaces the homepage/about/navigation singletons and wipes Studio edits. Use targeted patches (`setIfMissing`, `--team-only`) for live content.
+
 ## Content Rules
 
 - Approved stats: 50+ companies formed, 10+ free zones, 98% first-time approvals, 72h average setup. Never use the old 500+/40+ or "hundreds of" claims.
-- Testimonials: name + position + quote, no photos.
+- Testimonials: name + position + quote, no photos. The client enters them in Studio; don't replace the placeholders in code.
 - Grouped services (license renewal/modification/cancellation/freezing; the five notary documents) live as anchored sections on one page, not separate routes.
 
 ## Styling Rules
