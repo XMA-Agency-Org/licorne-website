@@ -15,12 +15,16 @@ Desk structure (`sanity/structure.ts`):
 | Form Submissions | `formSubmission` documents + `formSettings` singleton | Lead log from every website form (New leads / All) and the notification inboxes. See `docs/forms.md` |
 | Homepage | `homepage` singleton | Hero, About + stats, Services rows, Testimonials section settings (rows, speed, heading, button, hide) + testimonial refs, Team (refs, hide), FAQ (hide), SEO |
 | About Page | `aboutPage` singleton | Everything on `/about` |
-| Navigation & Menus | `navigation` singleton | Company Setup dropdown, Services cascading menu, Resources, footer columns, homepage service rows' sub-links are separate (see homepage) |
+| Navigation & Menus | `navigation` singleton | **Single source for the service taxonomy**: header labels, links and button; Company Setup dropdown; Services cascading menu (categories + their links); Resources; footer (categories flagged "Show in footer" become columns); the whole `/services` listing page; the contact form's "Service of interest" options. The homepage service rows are separate (Homepage › Services) |
 | Service Pages | `service` documents | `/services/[slug]` — one document per page |
 | Testimonials | `testimonial` documents | Name, position, quote (no photos by client request) |
 | Team Members | `teamMember` documents | Name, optional role, photo; rendered with initials fallback until a photo is added. Currently Muhammad Usman Butt, Umair Butt, Fahd Bouazer, Gicelle Cinco (roles pending from client) |
 
-Only wired types are registered in `sanity/schemas/index.ts`. Contact, How It Works, FAQ page, cost guide, free zones, business activities and the `/services` index remain static.
+Only wired types are registered in `sanity/schemas/index.ts`. Contact, How It Works, FAQ page, cost guide, free zones and business activities remain static. On `/services`, only the hero and the bottom CTA are static.
+
+### Links
+
+Every menu link is a `link` object: **A service page** (reference to a `service`, plus an optional section anchor such as `renewal`) or **Any other URL**. Page links resolve in GROQ (`resolvedHref` in `sanity/lib/queries.ts`), so renaming a service's slug updates every menu. An empty label falls back to the service title. The link's description shows in the Company Setup dropdown and as card text on `/services`. If it's empty, cards fall back to the matching section's deliverable text, then the service's "Card on the /services page" summary, then its hero description.
 
 ## Files
 
@@ -31,12 +35,13 @@ Only wired types are registered in `sanity/schemas/index.ts`. Contact, How It Wo
 | `sanity/schemas/` | `objects/` (stat, faqItem, cta, processStep, deliverable, seo, link), `documents/` (service, testimonial, teamMember, formSubmission), `singletons/` (homepage, aboutPage, navigation, formSettings) |
 | `sanity/lib/client.ts` | `next-sanity` client (CDN on, stega → `/studio`) |
 | `sanity/lib/live.ts` | `defineLive` → `sanityFetch` + `<SanityLive />` (rendered in `app/layout.tsx`) |
-| `sanity/lib/queries.ts` | `defineQuery` GROQ: navigation, homepage, service slugs, service by slug, about page |
+| `sanity/lib/queries.ts` | `defineQuery` GROQ: navigation, services listing, sitemap, homepage, service slugs, service by slug, about page |
 | `sanity/lib/image.ts` | `urlFor()` builder |
 | `sanity/lib/writeClient.ts` | Server-only write client (form submissions) |
 | `sanity/types.generated.ts` | TypeGen output — **regenerate after any schema or query change**: `bun run typegen` |
 | `sanity/seed/` | Seed content: `services/*.ts` (one per service page), `site.ts` (navigation, homepage, about, testimonials, team) |
 | `scripts/seed-sanity.ts` | `bun run seed` uploads hero images from `public/images/heroes/` and team photos from `sanity/seed/images/team/`, then upserts all seed content. It's idempotent: services match by slug, testimonials by author, team by name, singletons by id, and team members not in the seed are removed. **A full seed replaces the homepage/about/navigation singletons and so overwrites Studio edits.** `bun run seed -- --team-only` only upserts team members and patches `homepage.team.members` |
+| `scripts/migrate-navigation.ts` + `scripts/lib/navigationMigration.ts` | `bun run migrate:navigation` converts nav links that point at `/services/<slug>` into service-page references, fills new nav fields only where empty, and adds the Company Setup card summaries/badges. Safe to re-run. The full seed also runs it |
 | `app/api/revalidate/route.ts` | Webhook target; validates `SANITY_REVALIDATE_SECRET` and revalidates the whole site |
 
 ## Data flow
@@ -82,10 +87,12 @@ CORS origins registered: `http://localhost:3000`, `http://localhost:3001`, `http
 
 `app/sitemap.ts` lists the static routes plus every `service` slug from Sanity, revalidated hourly. `app/robots.ts` disallows `/studio` and `/api`. Both use `siteUrl` from `lib/siteUrl.ts` (`NEXT_PUBLIC_SITE_URL`, fallback `https://licorne-website.vercel.app`). **Set `NEXT_PUBLIC_SITE_URL` once the production domain is live.**
 
-## Adding a service page
+## Adding a service page (client workflow)
 
-1. In Studio → Service Pages → create: title, slug, category, order, hero image, and the section fields.
-2. Add the link under the right category in **Navigation & Menus** (and in Homepage → Services → sub-links if it should appear there).
-3. Optionally add a card to the static `/services` index (`app/(site)/services/page.tsx`).
+1. Studio › **Service Pages** › create the page: title, slug, category, hero image and sections. For a Company Setup page, also fill **Card on the /services page** (summary and badge).
+2. Studio › **Navigation & Menus** › add a link under Company Setup or the right Services category. Choose "A service page" and pick the page. Add a section anchor only to link to part of a grouped page.
+3. Publish both. The header dropdown, mobile menu, footer (if the category is flagged), `/services` listing, sitemap and contact form options all update.
 
-If adding via code instead, add a seed file in `sanity/seed/services/`, register it in `index.ts`, run `bun run seed`.
+New categories are added under Navigation & Menus › Services menu. Each category has "Heading on the /services page" fields and a "Show its links as a footer column" toggle. On `/services` the section id is the slugified title (e.g. `finance-banking`), so `/services#finance-banking` links keep working as long as the title stays the same.
+
+If adding via code instead, add a seed file in `sanity/seed/services/`, register it in `index.ts`, and add the link to `lib/navigation.ts`. Don't run the full `bun run seed` against a dataset the client has edited.

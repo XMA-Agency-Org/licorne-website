@@ -1,13 +1,43 @@
 import { defineQuery } from "next-sanity";
 
 const imageProjection = `{ ..., asset->{ _id, url, metadata { lqip, dimensions } } }`;
-const linkProjection = `{ label, href, description }`;
+const resolvedHref = `select(
+  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),
+  href
+)`;
+const linkProjection = `{ "label": coalesce(label, page->title), "href": ${resolvedHref}, description }`;
+const serviceCardProjection = `{
+  "label": coalesce(label, page->title),
+  "href": ${resolvedHref},
+  "summary": coalesce(
+    description,
+    page->deliverables.items[anchor == ^.section][0].description,
+    page->listing.summary,
+    page->hero.description
+  ),
+  "badge": page->listing.badge,
+  "image": page->hero.image${imageProjection}
+}`;
+
+const featuredServiceCardProjection = `{
+  "label": coalesce(label, page->title),
+  "href": ${resolvedHref},
+  "summary": coalesce(page->listing.summary, page->hero.description, description),
+  "badge": page->listing.badge,
+  "image": page->hero.image${imageProjection}
+}`;
 
 export const navigationQuery = defineQuery(`*[_type == "navigation"][0]{
-  companySetup{ href, description, items[]${linkProjection} },
-  serviceCategories[]{ title, href, description, items[]${linkProjection} },
+  header{ servicesLabel, servicesHref, resourcesLabel, links[]${linkProjection}, ctaButton${linkProjection} },
+  companySetup{ title, href, description, items[]${linkProjection} },
+  serviceCategories[]{ title, href, description, showInFooter, items[]${linkProjection} },
   resourceLinks[]${linkProjection},
   footer{ description, companyLinks[]${linkProjection} }
+}`);
+
+export const servicesListingQuery = defineQuery(`*[_type == "navigation"][0]{
+  companySetup{ title, listingTitle, listingTitleAccent, items[]${featuredServiceCardProjection} },
+  serviceCategories[]{ title, href, listingTitle, listingTitleAccent, items[]${serviceCardProjection} }
 }`);
 
 export const homepageQuery = defineQuery(`*[_type == "homepage"][0]{

@@ -30,8 +30,22 @@ export type Navigation = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  header?: {
+    servicesLabel?: string;
+    servicesHref?: string;
+    resourcesLabel?: string;
+    links?: Array<
+      {
+        _key: string;
+      } & Link
+    >;
+    ctaButton?: Link;
+  };
   companySetup?: {
+    title?: string;
     href?: string;
+    listingTitle?: string;
+    listingTitleAccent?: string;
     description?: string;
     items?: Array<
       {
@@ -48,6 +62,9 @@ export type Navigation = {
         _key: string;
       } & Link
     >;
+    showInFooter?: boolean;
+    listingTitle?: string;
+    listingTitleAccent?: string;
     _type: "serviceCategory";
     _key: string;
   }>;
@@ -64,6 +81,23 @@ export type Navigation = {
       } & Link
     >;
   };
+};
+
+export type ServiceReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "service";
+};
+
+export type Link = {
+  _type: "link";
+  linkType?: "page" | "custom";
+  page?: ServiceReference;
+  section?: string;
+  href?: string;
+  label?: string;
+  description?: string;
 };
 
 export type SanityImageAssetReference = {
@@ -356,6 +390,10 @@ export type Service = {
     | "pro-government"
     | "notary-services";
   order?: number;
+  listing?: {
+    summary?: string;
+    badge?: string;
+  };
   hero?: {
     title?: string;
     description?: string;
@@ -416,13 +454,6 @@ export type Slug = {
   _type: "slug";
   current?: string;
   source?: string;
-};
-
-export type Link = {
-  _type: "link";
-  label?: string;
-  href?: string;
-  description?: string;
 };
 
 export type Deliverable = {
@@ -551,6 +582,8 @@ export type Geopoint = {
 export type AllSanitySchemaTypes =
   | FormSettings
   | Navigation
+  | ServiceReference
+  | Link
   | SanityImageAssetReference
   | AboutPage
   | Seo
@@ -565,7 +598,6 @@ export type AllSanitySchemaTypes =
   | Testimonial
   | Service
   | Slug
-  | Link
   | Deliverable
   | ProcessStep
   | FaqItem
@@ -581,9 +613,25 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/queries.ts
 // Variable: navigationQuery
-// Query: *[_type == "navigation"][0]{  companySetup{ href, description, items[]{ label, href, description } },  serviceCategories[]{ title, href, description, items[]{ label, href, description } },  resourceLinks[]{ label, href, description },  footer{ description, companyLinks[]{ label, href, description } }}
+// Query: *[_type == "navigation"][0]{  header{ servicesLabel, servicesHref, resourcesLabel, links[]{ "label": coalesce(label, page->title), "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href), description }, ctaButton{ "label": coalesce(label, page->title), "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href), description } },  companySetup{ title, href, description, items[]{ "label": coalesce(label, page->title), "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href), description } },  serviceCategories[]{ title, href, description, showInFooter, items[]{ "label": coalesce(label, page->title), "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href), description } },  resourceLinks[]{ "label": coalesce(label, page->title), "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href), description },  footer{ description, companyLinks[]{ "label": coalesce(label, page->title), "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href), description } }}
 export type NavigationQueryResult = {
+  header: {
+    servicesLabel: string | null;
+    servicesHref: string | null;
+    resourcesLabel: string | null;
+    links: Array<{
+      label: string | null;
+      href: string | null;
+      description: string | null;
+    }> | null;
+    ctaButton: {
+      label: string | null;
+      href: string | null;
+      description: string | null;
+    } | null;
+  } | null;
   companySetup: {
+    title: string | null;
     href: string | null;
     description: string | null;
     items: Array<{
@@ -596,6 +644,7 @@ export type NavigationQueryResult = {
     title: string | null;
     href: string | null;
     description: string | null;
+    showInFooter: boolean | null;
     items: Array<{
       label: string | null;
       href: string | null;
@@ -618,8 +667,65 @@ export type NavigationQueryResult = {
 } | null;
 
 // Source: sanity/lib/queries.ts
+// Variable: servicesListingQuery
+// Query: *[_type == "navigation"][0]{  companySetup{ title, listingTitle, listingTitleAccent, items[]{  "label": coalesce(label, page->title),  "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href),  "summary": coalesce(page->listing.summary, page->hero.description, description),  "badge": page->listing.badge,  "image": page->hero.image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } }} },  serviceCategories[]{ title, href, listingTitle, listingTitleAccent, items[]{  "label": coalesce(label, page->title),  "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href),  "summary": coalesce(    description,    page->deliverables.items[anchor == ^.section][0].description,    page->listing.summary,    page->hero.description  ),  "badge": page->listing.badge,  "image": page->hero.image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } }} }}
+export type ServicesListingQueryResult = {
+  companySetup: {
+    title: string | null;
+    listingTitle: string | null;
+    listingTitleAccent: string | null;
+    items: Array<{
+      label: string | null;
+      href: string | null;
+      summary: string | null;
+      badge: string | null;
+      image: {
+        asset: {
+          _id: string;
+          url: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: SanityImageDimensions | null;
+          } | null;
+        } | null;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      } | null;
+    }> | null;
+  } | null;
+  serviceCategories: Array<{
+    title: string | null;
+    href: string | null;
+    listingTitle: string | null;
+    listingTitleAccent: string | null;
+    items: Array<{
+      label: string | null;
+      href: string | null;
+      summary: string | null;
+      badge: string | null;
+      image: {
+        asset: {
+          _id: string;
+          url: string | null;
+          metadata: {
+            lqip: string | null;
+            dimensions: SanityImageDimensions | null;
+          } | null;
+        } | null;
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      } | null;
+    }> | null;
+  }> | null;
+} | null;
+
+// Source: sanity/lib/queries.ts
 // Variable: homepageQuery
-// Query: *[_type == "homepage"][0]{  hero{ ..., bgImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },  about{ ..., image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]{ label, href, description } } },  testimonialsSection{ hidden, eyebrow, title, titleAccent, rows, speed, ctaLabel, ctaHref },  testimonials[]->{ _id, author, position, text },  team{ hidden, eyebrow, title, members[]->{ _id, name, role, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } } },  faq{ hidden, eyebrow, title, items[]{ question, answer } },  seo}
+// Query: *[_type == "homepage"][0]{  hero{ ..., bgImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },  about{ ..., image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]{ "label": coalesce(label, page->title), "href": select(  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),  href), description } } },  testimonialsSection{ hidden, eyebrow, title, titleAccent, rows, speed, ctaLabel, ctaHref },  testimonials[]->{ _id, author, position, text },  team{ hidden, eyebrow, title, members[]->{ _id, name, role, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } } },  faq{ hidden, eyebrow, title, items[]{ question, answer } },  seo}
 export type HomepageQueryResult = {
   hero: {
     headline?: string;
@@ -934,8 +1040,9 @@ export type AboutPageQueryResult = {
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_type == "navigation"][0]{\n  companySetup{ href, description, items[]{ label, href, description } },\n  serviceCategories[]{ title, href, description, items[]{ label, href, description } },\n  resourceLinks[]{ label, href, description },\n  footer{ description, companyLinks[]{ label, href, description } }\n}': NavigationQueryResult;
-    '*[_type == "homepage"][0]{\n  hero{ ..., bgImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  about{ ..., image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]{ label, href, description } } },\n  testimonialsSection{ hidden, eyebrow, title, titleAccent, rows, speed, ctaLabel, ctaHref },\n  testimonials[]->{ _id, author, position, text },\n  team{ hidden, eyebrow, title, members[]->{ _id, name, role, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } } },\n  faq{ hidden, eyebrow, title, items[]{ question, answer } },\n  seo\n}': HomepageQueryResult;
+    '*[_type == "navigation"][0]{\n  header{ servicesLabel, servicesHref, resourcesLabel, links[]{ "label": coalesce(label, page->title), "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n), description }, ctaButton{ "label": coalesce(label, page->title), "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n), description } },\n  companySetup{ title, href, description, items[]{ "label": coalesce(label, page->title), "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n), description } },\n  serviceCategories[]{ title, href, description, showInFooter, items[]{ "label": coalesce(label, page->title), "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n), description } },\n  resourceLinks[]{ "label": coalesce(label, page->title), "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n), description },\n  footer{ description, companyLinks[]{ "label": coalesce(label, page->title), "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n), description } }\n}': NavigationQueryResult;
+    '*[_type == "navigation"][0]{\n  companySetup{ title, listingTitle, listingTitleAccent, items[]{\n  "label": coalesce(label, page->title),\n  "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n),\n  "summary": coalesce(page->listing.summary, page->hero.description, description),\n  "badge": page->listing.badge,\n  "image": page->hero.image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } }\n} },\n  serviceCategories[]{ title, href, listingTitle, listingTitleAccent, items[]{\n  "label": coalesce(label, page->title),\n  "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n),\n  "summary": coalesce(\n    description,\n    page->deliverables.items[anchor == ^.section][0].description,\n    page->listing.summary,\n    page->hero.description\n  ),\n  "badge": page->listing.badge,\n  "image": page->hero.image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } }\n} }\n}': ServicesListingQueryResult;
+    '*[_type == "homepage"][0]{\n  hero{ ..., bgImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  about{ ..., image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]{ "label": coalesce(label, page->title), "href": select(\n  linkType == "page" && defined(page) => "/services/" + page->slug.current + select(defined(section) && section != "" => "#" + section, ""),\n  href\n), description } } },\n  testimonialsSection{ hidden, eyebrow, title, titleAccent, rows, speed, ctaLabel, ctaHref },\n  testimonials[]->{ _id, author, position, text },\n  team{ hidden, eyebrow, title, members[]->{ _id, name, role, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } } },\n  faq{ hidden, eyebrow, title, items[]{ question, answer } },\n  seo\n}': HomepageQueryResult;
     '*[_type == "service" && defined(slug.current)]{\n  "slug": slug.current,\n  _updatedAt\n}': SitemapServicesQueryResult;
     '*[_type == "service" && defined(slug.current)]{\n  "slug": slug.current\n}': ServiceSlugsQueryResult;
     '*[_type == "service" && slug.current == $slug][0]{\n  title,\n  "slug": slug.current,\n  category,\n  hero{ title, description, imageAlt, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  overview{ eyebrow, title, description, highlights, expectationTitle, expectationDescription },\n  stats[]{ value, label },\n  deliverables{ eyebrow, title, items[]{ anchor, title, description } },\n  process{ eyebrow, title, items[]{ step, title, description } },\n  faqs{ eyebrow, title, items[]{ question, answer } },\n  cta{ title, description, primaryLabel, primaryHref, secondaryLabel, secondaryHref },\n  seo{ title, description, keywords, ogImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } }\n}': ServiceBySlugQueryResult;

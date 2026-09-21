@@ -4,6 +4,11 @@ export const service: ServiceSeed = {
   slug: "mainland-company-setup",
   category: "company-setup",
   order: 1,
+  listing: {
+    summary:
+      "Establish your LLC in Dubai mainland with full UAE market access. We handle licensing, approvals and registration for seamless market entry.",
+    badge: "Most Popular",
+  },
   hero: {
     title: "Dubai Mainland Company Setup",
     description:

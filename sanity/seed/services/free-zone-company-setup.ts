@@ -4,6 +4,11 @@ export const service: ServiceSeed = {
   slug: "free-zone-company-setup",
   category: "company-setup",
   order: 2,
+  listing: {
+    summary:
+      "100% foreign ownership, tax advantages, and simplified regulations. We help you choose the right free zone and manage the entire registration process.",
+    badge: "100% Ownership",
+  },
   hero: {
     title: "Dubai Free Zone Company Setup",
     description:

@@ -31,16 +31,14 @@ function FooterLinkGroup({
 
 export function Footer({ navigation }: { navigation: SiteNavigation }) {
   const { companySetup, serviceCategories, resourceLinks, footer } = navigation;
-  const visaCategory = serviceCategories.find((c) => c.title === "Visa & Immigration");
-  const financeCategory = serviceCategories.find((c) => c.title === "Finance & Banking");
+  const footerColumnCategories = serviceCategories.filter((category) => category.showInFooter);
   const serviceGroups = [
     { title: companySetup.title, links: companySetup.items },
     {
       title: "Services",
       links: serviceCategories.map(({ title, href }) => ({ label: title, href })),
     },
-    ...(visaCategory ? [{ title: visaCategory.title, links: visaCategory.items }] : []),
-    ...(financeCategory ? [{ title: financeCategory.title, links: financeCategory.items }] : []),
+    ...footerColumnCategories.map(({ title, items }) => ({ title, links: items })),
   ];
 
   return (

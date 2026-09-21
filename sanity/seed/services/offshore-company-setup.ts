@@ -4,6 +4,11 @@ export const service: ServiceSeed = {
   slug: "offshore-company-setup",
   category: "company-setup",
   order: 3,
+  listing: {
+    summary:
+      "Hold assets, own shares and structure international business through a UAE offshore company. No office or residence visa required.",
+    badge: "Asset Holding",
+  },
   hero: {
     title: "Offshore Company Setup UAE",
     description:

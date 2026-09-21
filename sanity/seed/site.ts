@@ -1,4 +1,4 @@
-import { COMPANY_SETUP, RESOURCES, SERVICES, type NavLink } from "@/lib/navigation";
+import { COMPANY_SETUP, DEFAULT_HEADER, RESOURCES, SERVICES, type NavLink } from "@/lib/navigation";
 
 const stripIcons = (items: NavLink[]) =>
   items.map(({ label, href, description }) => ({ label, href, description: description ?? undefined }));
@@ -6,7 +6,17 @@ const stripIcons = (items: NavLink[]) =>
 export const navigation = {
   _id: "navigation",
   _type: "navigation",
+  header: {
+    servicesLabel: DEFAULT_HEADER.servicesLabel,
+    servicesHref: DEFAULT_HEADER.servicesHref,
+    resourcesLabel: DEFAULT_HEADER.resourcesLabel,
+    links: stripIcons(DEFAULT_HEADER.links),
+    ctaButton: stripIcons([DEFAULT_HEADER.ctaButton])[0],
+  },
   companySetup: {
+    title: COMPANY_SETUP.title,
+    listingTitle: COMPANY_SETUP.listingTitle,
+    listingTitleAccent: COMPANY_SETUP.listingTitleAccent,
     href: COMPANY_SETUP.href,
     description: COMPANY_SETUP.description,
     items: stripIcons(COMPANY_SETUP.items),
@@ -16,6 +26,9 @@ export const navigation = {
     title,
     href: category.href,
     description: category.description,
+    listingTitle: category.listingTitle,
+    listingTitleAccent: category.listingTitleAccent,
+    showInFooter: category.showInFooter,
     items: stripIcons(category.items),
   })),
   resourceLinks: RESOURCES,

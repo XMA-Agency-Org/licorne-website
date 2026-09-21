@@ -2,6 +2,7 @@ export type ServiceSeed = {
   slug: string;
   category: string;
   order: number;
+  listing?: { summary?: string; badge?: string };
   hero: { title: string; description: string; image: string; imageAlt: string };
   overview: {
     eyebrow: string;

@@ -15,6 +15,7 @@ bun run lint     # ESLint
 bun run typegen  # Extract Sanity schema + regenerate sanity/types.generated.ts (run after schema/query changes)
 bun run seed     # Upsert seed content + images into Sanity (overwrites singletons, including Studio edits!)
 bun run seed -- --team-only  # Only upsert team members + relink homepage.team
+bun run migrate:navigation   # Convert nav links to service-page references; fill new nav fields (idempotent)
 ```
 
 ## Architecture
@@ -74,7 +75,7 @@ Utility classes: `glass`, `gradient-text`, `bg-dots-pattern`, `card-elevated`, `
 
 ### Navigation Model
 
-`lib/navigation.ts` is the single source of truth for the service taxonomy (`COMPANY_SETUP` + `SERVICES` categories). Header, cascading menu, footer and the homepage `ServicesSection` all derive from it. See `docs/services-page.md` for the category list and anchor conventions, and `docs/homepage.md` for homepage section notes.
+The Sanity `navigation` singleton is the single source of truth for the service taxonomy. The header (labels, links, button), cascading menu, mobile menu, footer columns, the `/services` listing page and the lead form's service options all read it. `lib/navigation.ts` holds the typed static fallback (`COMPANY_SETUP`, `SERVICES`, `DEFAULT_HEADER`) and `resolveNavigation()`. Menu links reference service documents (see "Links" in `docs/cms.md`). Never hardcode service lists or nav labels in components. See `docs/services-page.md` for the category list and anchor conventions, and `docs/homepage.md` for homepage section notes.
 
 ### Service Pages Pattern
 
@@ -107,6 +108,7 @@ All three forms (homepage CTA, service CTA, /contact) render `components/forms/L
 
 - Commit and push straight to `main` (the user's decision, Sep 21 2026). Don't push `staging`.
 - Don't run `bun run build` unless asked. Verify with `bun run lint`, `bunx tsc --noEmit` and the dev server.
+- Data migration tools must target explicit document paths. A generic "any object with `href`" walk once mistook nav categories for links and corrupted their `_type`. Always back up the doc and verify with a GROQ read after migrating.
 - Before running a full `bun run seed`, remember it replaces the homepage/about/navigation singletons and wipes Studio edits. Use targeted patches (`setIfMissing`, `--team-only`) for live content.
 
 ## Content Rules

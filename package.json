@@ -10,7 +10,8 @@
     "knip": "knip",
     "knip:fix": "knip --fix --allow-remove-files",
     "typegen": "sanity schema extract --path sanity/schema.json --force && sanity typegen generate",
-    "seed": "bun --env-file=.env.local run scripts/seed-sanity.ts"
+    "seed": "bun --env-file=.env.local run scripts/seed-sanity.ts",
+    "migrate:navigation": "bun --env-file=.env.local run scripts/migrate-navigation.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

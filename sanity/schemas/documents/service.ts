@@ -44,6 +44,25 @@ export default defineType({
       type: "number",
     }),
     defineField({
+      name: "listing",
+      title: "Card on the /services page",
+      type: "object",
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        defineField({
+          name: "summary",
+          description: "Card text. Falls back to the hero description",
+          type: "text",
+          rows: 3,
+        }),
+        defineField({
+          name: "badge",
+          description: "Small label on Company Setup cards, e.g. Most Popular",
+          type: "string",
+        }),
+      ],
+    }),
+    defineField({
       name: "hero",
       title: "Hero",
       type: "object",

@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { basename, join } from "node:path";
 import { randomBytes } from "node:crypto";
 import { services } from "../sanity/seed/services";
+import { upgradeNavigation } from "./lib/navigationMigration";
 import { aboutPage, homepage, navigation, teamMembers, testimonials } from "../sanity/seed/site";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -172,6 +173,7 @@ async function seedSingletons(testimonialIds: string[], teamIds: string[]) {
   console.log("  aboutPage");
 
   await client.createOrReplace(withKeys(navigation));
+  await upgradeNavigation(client);
   console.log("  navigation");
 }
 

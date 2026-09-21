@@ -3,7 +3,7 @@
 ## Overview
 
 The services section consists of two main page types:
-1. **Services Index Page** (`/services`) - Static overview of all services with category grouping
+1. **Services Index Page** (`/services`): server component that renders the Company Setup cards and one section per Services category, all read from the Sanity `navigation` singleton (`servicesListingQuery` → `_lib/toServicesListing.ts`, which falls back to `lib/navigation.ts`). Only the hero (`_components/ServicesHero.tsx`) and the bottom CTA are static. Sections alternate light and dark; the section id is the slugified category title
 2. **Individual Service Pages** (`/services/[slug]`) - Rendered from Sanity `service` documents (see `docs/cms.md`)
 
 ## Architecture
@@ -20,7 +20,9 @@ app/(site)/services/
 │   ├── ProcessTimeline.tsx
 │   ├── ServiceCardEnhanced.tsx
 │   ├── ServiceCategorySection.tsx
+│   ├── ServicesHero.tsx   # Static hero of /services
 │   └── index.ts
+├── _lib/toServicesListing.ts  # Maps navigation → listing props (+ static fallback)
 ├── components/            # Shared service components
 │   ├── ServicePage.tsx    # Template for individual services
 │   └── ServiceCta.tsx     # CTA section component
@@ -209,4 +211,4 @@ Client-approved numbers (from the Sept 2026 review): **50+** companies formed, *
 
 ## Adding New Services
 
-Preferred: create the document in Studio → Service Pages, then add links in Navigation & Menus. Via code: add `sanity/seed/services/<slug>.ts`, register it in `sanity/seed/services/index.ts`, run `bun run seed`, and update `lib/navigation.ts` (static fallback) plus the `/services` index cards.
+Preferred: create the document in Studio → Service Pages, then add links in Navigation & Menus. Via code: add `sanity/seed/services/<slug>.ts`, register it in `sanity/seed/services/index.ts`, run `bun run seed`, and update `lib/navigation.ts` (static fallback). The `/services` index needs no code change.

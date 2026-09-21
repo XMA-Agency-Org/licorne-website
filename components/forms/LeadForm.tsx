@@ -12,7 +12,8 @@ import {
   initialLeadFormState,
   type LeadFieldName,
 } from "@/lib/leads/leadSchema"
-import { LEAD_SERVICE_OPTIONS } from "./leadServiceOptions"
+import { useSiteNavigation } from "@/components/layout/NavigationProvider"
+import { leadServiceOptions } from "./leadServiceOptions"
 
 type LeadFormLayout = "compact" | "contact"
 
@@ -66,6 +67,7 @@ function HoneypotField() {
 
 export function LeadForm({ submitLabel, layout = "compact" }: LeadFormProps) {
   const pathname = usePathname()
+  const serviceOptions = leadServiceOptions(useSiteNavigation())
   const [state, formAction, isPending] = useActionState(submitLead, initialLeadFormState)
 
   if (state.status === "success") return <LeadFormSuccess />
@@ -127,8 +129,8 @@ export function LeadForm({ submitLabel, layout = "compact" }: LeadFormProps) {
 
       <div>
         <Label htmlFor={fieldId("service")}>Service of interest</Label>
-        <Select id={fieldId("service")} name="service" defaultValue={submittedValues.service ?? LEAD_SERVICE_OPTIONS[0]}>
-          {LEAD_SERVICE_OPTIONS.map((option) => (
+        <Select id={fieldId("service")} name="service" defaultValue={submittedValues.service ?? serviceOptions[0]}>
+          {serviceOptions.map((option) => (
             <option key={option}>{option}</option>
           ))}
         </Select>

@@ -1,7 +1,11 @@
-import { COMPANY_SETUP, SERVICES } from "@/lib/navigation"
+import { stegaClean } from "next-sanity"
+import type { SiteNavigation } from "@/lib/navigation"
 
-export const LEAD_SERVICE_OPTIONS = [
-  ...COMPANY_SETUP.items.map((item) => item.label),
-  ...Object.keys(SERVICES),
-  "Other",
-]
+export function leadServiceOptions({ companySetup, serviceCategories }: SiteNavigation) {
+  const options = [
+    ...companySetup.items.map((item) => item.label),
+    ...serviceCategories.map((category) => category.title),
+    "Other",
+  ].map((option) => stegaClean(option))
+  return [...new Set(options)]
+}

@@ -85,7 +85,7 @@ function MobileAccordion({
 }
 
 export function Header({ navigation }: { navigation: SiteNavigation }) {
-  const { companySetup, serviceCategories, resourceLinks } = navigation
+  const { header, companySetup, serviceCategories, resourceLinks } = navigation
   const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
@@ -148,7 +148,7 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
 
               <NavigationMenuItem>
                 <NavigationMenuTrigger className={triggerStyles}>
-                  Company Setup
+                  {companySetup.title}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="w-[360px] p-3 bg-white space-y-1">
@@ -177,8 +177,8 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
 
               <NavigationMenuItem>
                 <NavigationMenuTrigger className={triggerStyles}>
-                  <Link href="/services" className="hover:text-primary">
-                    Services
+                  <Link href={header.servicesHref} className="hover:text-primary">
+                    {header.servicesLabel}
                   </Link>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -188,7 +188,7 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
 
               <NavigationMenuItem>
                 <NavigationMenuTrigger className={triggerStyles}>
-                  Resources
+                  {header.resourcesLabel}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="w-[300px] p-3 bg-white space-y-1">
@@ -208,38 +208,24 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
                 </NavigationMenuContent>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link href="/about" className={navLinkStyles}>
-                    About
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link href="/faq" className={navLinkStyles}>
-                    FAQ
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link href="/contact" className={navLinkStyles}>
-                    Contact
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
+              {header.links.map((link) => (
+                <NavigationMenuItem key={link.href}>
+                  <NavigationMenuLink asChild>
+                    <Link href={link.href} className={navLinkStyles}>
+                      {link.label}
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
             </NavigationMenuList>
           </NavigationMenu>
 
           <div className="hidden lg:block">
             <Link
-              href="/contact"
+              href={header.ctaButton.href}
               className="px-5 py-2.5 transition-colors text-sm font-medium rounded-sm bg-primary text-white hover:bg-primary-hover"
             >
-              Free Consultation
+              {header.ctaButton.label}
             </Link>
           </div>
 
@@ -269,7 +255,7 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
                   Home
                 </MobileNavItem>
 
-                <MobileAccordion title="Company Setup">
+                <MobileAccordion title={companySetup.title}>
                   <div className="pl-4 space-y-1">
                     {companySetup.items.map((item) => (
                       <MobileNavItem
@@ -283,7 +269,7 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
                   </div>
                 </MobileAccordion>
 
-                <MobileAccordion title="Services">
+                <MobileAccordion title={header.servicesLabel}>
                   <div className="space-y-4 pl-4">
                     {serviceCategories.map(({ title, href, items }) => (
                       <div key={title}>
@@ -309,7 +295,7 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
                   </div>
                 </MobileAccordion>
 
-                <MobileAccordion title="Resources">
+                <MobileAccordion title={header.resourcesLabel}>
                   <div className="pl-4 space-y-1">
                     {resourceLinks.map((item) => (
                       <MobileNavItem
@@ -323,26 +309,20 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
                   </div>
                 </MobileAccordion>
 
-                <MobileNavItem href="/about" className="font-medium">
-                  About
-                </MobileNavItem>
-
-                <MobileNavItem href="/faq" className="font-medium">
-                  FAQ
-                </MobileNavItem>
-
-                <MobileNavItem href="/contact" className="font-medium">
-                  Contact
-                </MobileNavItem>
+                {header.links.map((link) => (
+                  <MobileNavItem key={link.href} href={link.href} className="font-medium">
+                    {link.label}
+                  </MobileNavItem>
+                ))}
               </nav>
 
               <div className="mt-8 pt-6 border-t border-base-200">
                 <SheetClose asChild>
                   <Link
-                    href="/contact"
+                    href={header.ctaButton.href}
                     className="block w-full px-5 py-3 bg-secondary text-white hover:bg-primary transition-colors text-sm font-medium rounded-sm text-center"
                   >
-                    Free Consultation
+                    {header.ctaButton.label}
                   </Link>
                 </SheetClose>
               </div>
