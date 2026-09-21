@@ -136,7 +136,7 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
             </div>
           </Link>
 
-          <NavigationMenu className="hidden lg:flex">
+          <NavigationMenu viewport={false} className="hidden lg:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuLink asChild>
@@ -181,7 +181,7 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
                     {header.servicesLabel}
                   </Link>
                 </NavigationMenuTrigger>
-                <NavigationMenuContent>
+                <NavigationMenuContent className="md:left-1/2 md:-translate-x-1/2">
                   <CascadingMenu categories={serviceCategories} />
                 </NavigationMenuContent>
               </NavigationMenuItem>
