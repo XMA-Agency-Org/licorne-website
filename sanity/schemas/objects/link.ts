@@ -1,3 +1,4 @@
+import { LinkIcon } from "@sanity/icons/Link";
 import { defineField, defineType } from "sanity";
 
 type LinkParent = { linkType?: "page" | "custom" } | undefined;
@@ -8,6 +9,7 @@ export default defineType({
   name: "link",
   title: "Link",
   type: "object",
+  icon: LinkIcon,
   fields: [
     defineField({
       name: "linkType",
@@ -45,7 +47,7 @@ export default defineType({
     defineField({
       name: "href",
       title: "URL",
-      description: "Internal path such as /about, or a full URL",
+      description: "A page on this site such as /about, or a full URL starting with https://",
       type: "string",
       hidden: ({ parent }) => isPageLink(parent),
       validation: (rule) =>
@@ -55,6 +57,7 @@ export default defineType({
     }),
     defineField({
       name: "label",
+      title: "Label",
       description: "Leave empty to use the service page's title",
       type: "string",
       validation: (rule) =>
@@ -64,6 +67,7 @@ export default defineType({
     }),
     defineField({
       name: "description",
+      title: "Short description (optional)",
       type: "text",
       rows: 2,
       description:

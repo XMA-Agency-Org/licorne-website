@@ -23,7 +23,7 @@ LeadForm (client, useActionState)
 | `components/ui/button.tsx` | CVA `Button` / `buttonVariants` (`primary`, `secondary`, `outline`) |
 | `lib/leads/leadSchema.ts` | zod schema, `LeadFormState`, honeypot field name |
 | `lib/leads/submitLead.ts` | Server action |
-| `lib/leads/sendLeadNotification.ts` | Resend call. Recipients come from Studio › Form Submissions › Form Settings, falling back to `LEAD_NOTIFICATION_EMAIL` |
+| `lib/leads/sendLeadNotification.ts` | Resend call. Recipients come from Studio › Leads & Form Submissions › Email Notification Settings, falling back to `LEAD_NOTIFICATION_EMAIL` |
 | `lib/leads/leadNotificationEmail.ts` | Subject, plain-text and HTML body. Includes a link to the submission in Studio |
 | `sanity/lib/writeClient.ts` | Server-only client that uses `SANITY_API_TOKEN` |
 
@@ -44,9 +44,9 @@ NEXT_PUBLIC_SITE_URL=        # used for the Studio link in emails, sitemap and r
 
 ## Studio
 
-Form Submissions sits at the top of the Studio sidebar:
-- **New leads**: submissions with status `new`, newest first
+Leads & Form Submissions sits at the top of the Studio sidebar:
+- **New leads**, **Contacted**, **Closed**: submissions by status, newest first. Previews show 🟢 new, 🟡 contacted, ⚪ closed
 - **All submissions**
-- **Form Settings**: the inboxes that receive lead emails
+- **Email Notification Settings**: the inboxes that receive lead emails
 
 Submission fields are read-only. Only `status` (New / Contacted / Closed) is editable. Submissions can't be created by hand; they only come from the website.

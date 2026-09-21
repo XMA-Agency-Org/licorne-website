@@ -44,14 +44,14 @@ export type Navigation = {
   companySetup?: {
     title?: string;
     href?: string;
-    listingTitle?: string;
-    listingTitleAccent?: string;
     description?: string;
     items?: Array<
       {
         _key: string;
       } & Link
     >;
+    listingTitle?: string;
+    listingTitleAccent?: string;
   };
   serviceCategories?: Array<{
     title?: string;

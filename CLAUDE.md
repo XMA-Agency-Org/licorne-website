@@ -112,6 +112,9 @@ All three forms (homepage CTA, service CTA, /contact) render `components/forms/L
 - ❌ The homepage hero image was swapped without being asked → ✅ never change hero/background images unless the user explicitly asks. The hero is `home-atrium.png` (in Sanity).
 - ❌ Passing className to the child `<Link>` of `<NavigationMenuLink asChild>` → the shadcn focus/hover classes are stacked, not merged, and win (dark text after click) → ✅ put classes on `NavigationMenuLink` itself so `cn()` merges them. Use named groups (`group/menu-link`) inside the nav, because `NavigationMenuList` is itself a `group`.
 - Data migration tools must target explicit document paths. A generic "any object with `href`" walk once mistook nav categories for links and corrupted their `_type`. Always back up the doc and verify with a GROQ read after migrating.
+- ❌ Imported icons from the `@sanity/icons` root → `tsc` passed but the Studio 500'd at runtime → ✅ v5 needs subpath imports (`@sanity/icons/Home`). Check the Studio in the dev server after schema edits.
+- Studio UX changes must never rename field `name`s or add `name` to anonymous array members (existing items have no `_type`). See "Editor experience conventions" in `docs/cms.md`.
+- Other local projects often hold ports 3000/3001; run this one with `bun run dev -- -p 3005` (CORS origin registered).
 - Before running a full `bun run seed`, remember it replaces the homepage/about/navigation singletons and wipes Studio edits. Use targeted patches (`setIfMissing`, `--team-only`) for live content.
 
 ## Content Rules

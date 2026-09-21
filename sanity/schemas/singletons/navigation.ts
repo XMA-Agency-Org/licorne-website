@@ -1,32 +1,75 @@
+import { BookIcon } from "@sanity/icons/Book";
+import { CaseIcon } from "@sanity/icons/Case";
+import { MenuIcon } from "@sanity/icons/Menu";
+import { PanelLeftIcon } from "@sanity/icons/PanelLeft";
+import { RocketIcon } from "@sanity/icons/Rocket";
+import { ThListIcon } from "@sanity/icons/ThList";
 import { defineArrayMember, defineField, defineType } from "sanity";
+import { accentWordField, buttonFieldset, linkPathField } from "../shared/fields";
+
+const servicesPageFieldset = {
+  name: "servicesPage",
+  title: "On the /services page",
+  options: { collapsible: true, collapsed: true },
+};
+
+const menuLinksField = (name: string, title: string, description?: string) =>
+  defineField({
+    name,
+    title,
+    description,
+    type: "array",
+    of: [defineArrayMember({ type: "link" })],
+  });
 
 export default defineType({
   name: "navigation",
-  title: "Navigation",
+  title: "Navigation & Menus",
   type: "document",
+  icon: MenuIcon,
+  groups: [
+    { name: "header", title: "Header", icon: MenuIcon, default: true },
+    { name: "companySetup", title: "Company Setup menu", icon: RocketIcon },
+    { name: "services", title: "Services menu", icon: CaseIcon },
+    { name: "resources", title: "Resources menu", icon: BookIcon },
+    { name: "footer", title: "Footer", icon: PanelLeftIcon },
+  ],
   fields: [
     defineField({
       name: "header",
       title: "Header",
+      description: "The top bar on every page",
       type: "object",
+      group: "header",
+      fieldsets: [
+        buttonFieldset("servicesMenu", "Services menu"),
+      ],
       fields: [
-        defineField({ name: "servicesLabel", title: "Services menu label", type: "string", initialValue: "Services" }),
         defineField({
-          name: "servicesHref",
-          title: "Services menu link",
-          description: "Where clicking the Services label goes",
+          name: "servicesLabel",
+          title: "Label",
           type: "string",
+          fieldset: "servicesMenu",
+          initialValue: "Services",
+        }),
+        defineField({
+          ...linkPathField("servicesHref", "Link when clicked", false),
+          fieldset: "servicesMenu",
           initialValue: "/services",
         }),
-        defineField({ name: "resourcesLabel", title: "Resources menu label", type: "string", initialValue: "Resources" }),
         defineField({
-          name: "links",
-          title: "Links after the menus",
-          description: "Plain links shown after Resources, e.g. About, FAQ, Contact",
-          type: "array",
-          of: [defineArrayMember({ type: "link" })],
+          name: "resourcesLabel",
+          title: "Resources menu label",
+          type: "string",
+          initialValue: "Resources",
         }),
-        defineField({ name: "ctaButton", title: "Button", type: "link" }),
+        menuLinksField("links", "Links after the menus", "Plain links shown after Resources, e.g. About, FAQ, Contact"),
+        defineField({
+          name: "ctaButton",
+          title: "Button",
+          description: "The highlighted button on the right of the header",
+          type: "link",
+        }),
       ],
     }),
     defineField({
@@ -34,7 +77,8 @@ export default defineType({
       title: "Company Setup menu",
       description: "The 'Company Setup' dropdown next to Home in the header",
       type: "object",
-      fieldsets: [{ name: "servicesPage", title: "On the /services page", options: { collapsible: true } }],
+      group: "companySetup",
+      fieldsets: [servicesPageFieldset],
       fields: [
         defineField({
           name: "title",
@@ -42,70 +86,56 @@ export default defineType({
           type: "string",
           initialValue: "Company Setup",
         }),
-        defineField({
-          name: "href",
-          title: "Overview URL",
-          type: "string",
-          initialValue: "/services#company-setup",
-        }),
-        defineField({
-          name: "listingTitle",
-          title: "Heading on the /services page",
-          type: "string",
-          fieldset: "servicesPage",
-        }),
-        defineField({
-          name: "listingTitleAccent",
-          title: "Heading accent word",
-          type: "string",
-          fieldset: "servicesPage",
-        }),
-
+        linkPathField("href", "'View all' link"),
         defineField({
           name: "description",
+          title: "Short description",
           type: "text",
           rows: 2,
         }),
+        menuLinksField("items", "Links", "Drag to reorder. Each link appears in the dropdown and as a card on /services."),
         defineField({
-          name: "items",
-          type: "array",
-          of: [defineArrayMember({ type: "link" })],
+          name: "listingTitle",
+          title: "Heading",
+          type: "string",
+          fieldset: "servicesPage",
         }),
+        defineField({ ...accentWordField("listingTitleAccent"), fieldset: "servicesPage" }),
       ],
     }),
     defineField({
       name: "serviceCategories",
-      title: "Services menu",
-      description: "Categories shown in the Services dropdown, footer and homepage services section",
+      title: "Services menu categories",
+      description:
+        "Each category is a column in the Services dropdown and a section on /services. Drag to reorder.",
       type: "array",
+      group: "services",
       of: [
         defineArrayMember({
           type: "object",
           name: "serviceCategory",
-          fieldsets: [{ name: "servicesPage", title: "On the /services page", options: { collapsible: true } }],
+          title: "Category",
+          icon: ThListIcon,
+          fieldsets: [servicesPageFieldset],
           fields: [
             defineField({
               name: "title",
+              title: "Category name",
+              description: "Also sets the /services#section link, so renaming it breaks old links to that section",
               type: "string",
               validation: (rule) => rule.required(),
             }),
             defineField({
-              name: "href",
-              title: "Overview URL",
-              description: "Where 'All <category>' links to",
-              type: "string",
+              ...linkPathField("href", "'View all' link"),
               validation: (rule) => rule.required(),
             }),
             defineField({
               name: "description",
+              title: "Short description",
               type: "text",
               rows: 2,
             }),
-            defineField({
-              name: "items",
-              type: "array",
-              of: [defineArrayMember({ type: "link" })],
-            }),
+            menuLinksField("items", "Links", "Drag to reorder"),
             defineField({
               name: "showInFooter",
               title: "Show its links as a footer column",
@@ -114,44 +144,41 @@ export default defineType({
             }),
             defineField({
               name: "listingTitle",
-              title: "Heading on the /services page",
+              title: "Heading",
               type: "string",
               fieldset: "servicesPage",
             }),
-            defineField({
-              name: "listingTitleAccent",
-              title: "Heading accent word",
-              type: "string",
-              fieldset: "servicesPage",
-            }),
+            defineField({ ...accentWordField("listingTitleAccent"), fieldset: "servicesPage" }),
           ],
           preview: {
-            select: { title: "title", subtitle: "href" },
+            select: { title: "title", links: "items", showInFooter: "showInFooter" },
+            prepare: ({ title, links, showInFooter }) => ({
+              title,
+              subtitle: [`${links?.length ?? 0} links`, showInFooter && "in footer"]
+                .filter(Boolean)
+                .join(" · "),
+            }),
           },
         }),
       ],
     }),
     defineField({
-      name: "resourceLinks",
-      title: "Resources menu",
-      type: "array",
-      of: [defineArrayMember({ type: "link" })],
+      ...menuLinksField("resourceLinks", "Resources menu links", "Drag to reorder"),
+      group: "resources",
     }),
     defineField({
       name: "footer",
+      title: "Footer",
+      description: "Service columns come from categories with 'Show its links as a footer column' switched on",
       type: "object",
+      group: "footer",
       fields: [
-        defineField({ name: "description", type: "text", rows: 3 }),
-        defineField({
-          name: "companyLinks",
-          title: "Company links",
-          type: "array",
-          of: [defineArrayMember({ type: "link" })],
-        }),
+        defineField({ name: "description", title: "Company blurb", type: "text", rows: 3 }),
+        menuLinksField("companyLinks", "Company links"),
       ],
     }),
   ],
   preview: {
-    prepare: () => ({ title: "Navigation" }),
+    prepare: () => ({ title: "Navigation & Menus" }),
   },
 });

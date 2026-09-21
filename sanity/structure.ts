@@ -1,76 +1,122 @@
-import type { StructureBuilder, StructureResolver } from "sanity/structure"
+import { BlockquoteIcon } from "@sanity/icons/Blockquote";
+import { CaseIcon } from "@sanity/icons/Case";
+import { CheckmarkCircleIcon } from "@sanity/icons/CheckmarkCircle";
+import { CogIcon } from "@sanity/icons/Cog";
+import { CommentIcon } from "@sanity/icons/Comment";
+import { EnvelopeIcon } from "@sanity/icons/Envelope";
+import { HomeIcon } from "@sanity/icons/Home";
+import { InboxIcon } from "@sanity/icons/Inbox";
+import { InfoOutlineIcon } from "@sanity/icons/InfoOutline";
+import { MenuIcon } from "@sanity/icons/Menu";
+import { UsersIcon } from "@sanity/icons/Users";
+import type { ComponentType } from "react";
+import type { StructureBuilder, StructureResolver } from "sanity/structure";
+import { SERVICE_CATEGORIES } from "./schemas/shared/serviceCategories";
 
-export const singletonTypes = ["homepage", "aboutPage", "navigation", "formSettings"]
+export const singletonTypes = ["homepage", "aboutPage", "navigation", "formSettings"];
 
-export const systemCreatedTypes = ["formSubmission"]
+export const systemCreatedTypes = ["formSubmission"];
 
-export const FORM_SETTINGS_DOCUMENT_ID = "settings.formSettings"
+export const FORM_SETTINGS_DOCUMENT_ID = "settings.formSettings";
 
-const singletonItems = [
-  { type: "homepage", title: "Homepage" },
-  { type: "aboutPage", title: "About Page" },
-  { type: "navigation", title: "Navigation & Menus" },
-]
+const structuredTypes = new Set([...singletonTypes, ...systemCreatedTypes, "service", "testimonial", "teamMember"]);
 
-const documentTypeItems = [
-  { type: "service", title: "Service Pages" },
-  { type: "testimonial", title: "Testimonials" },
-  { type: "teamMember", title: "Team Members" },
-]
+const newestSubmissionsFirst = [{ field: "submittedAt", direction: "desc" as const }];
 
-const newestSubmissionsFirst = [{ field: "submittedAt", direction: "desc" as const }]
+const byOrderThenTitle = [
+  { field: "order", direction: "asc" as const },
+  { field: "title", direction: "asc" as const },
+];
 
-const singletonItem = (S: StructureBuilder, type: string, title: string, documentId = type) =>
+const singletonItem = (
+  S: StructureBuilder,
+  type: string,
+  title: string,
+  icon: ComponentType,
+  documentId = type,
+) =>
   S.listItem()
+    .id(type)
     .title(title)
-    .child(S.document().schemaType(type).documentId(documentId))
+    .icon(icon)
+    .child(S.document().schemaType(type).documentId(documentId).title(title));
+
+const submissionsByStatus = (S: StructureBuilder, title: string, icon: ComponentType, status?: string) =>
+  S.listItem()
+    .id(`submissions-${status ?? "all"}`)
+    .title(title)
+    .icon(icon)
+    .child(
+      S.documentList()
+        .title(title)
+        .schemaType("formSubmission")
+        .filter(status ? '_type == "formSubmission" && status == $status' : '_type == "formSubmission"')
+        .params(status ? { status } : {})
+        .defaultOrdering(newestSubmissionsFirst),
+    );
 
 const formSubmissionsItem = (S: StructureBuilder) =>
   S.listItem()
-    .title("Form Submissions")
+    .id("formSubmissions")
+    .title("Leads & Form Submissions")
+    .icon(InboxIcon)
     .child(
       S.list()
-        .title("Form Submissions")
+        .title("Leads & Form Submissions")
         .items([
-          S.listItem()
-            .title("New leads")
-            .child(
-              S.documentList()
-                .title("New leads")
-                .schemaType("formSubmission")
-                .filter('_type == "formSubmission" && status == "new"')
-                .defaultOrdering(newestSubmissionsFirst)
-            ),
-          S.listItem()
-            .title("All submissions")
-            .child(
-              S.documentList()
-                .title("All submissions")
-                .schemaType("formSubmission")
-                .filter('_type == "formSubmission"')
-                .defaultOrdering(newestSubmissionsFirst)
-            ),
+          submissionsByStatus(S, "New leads", EnvelopeIcon, "new"),
+          submissionsByStatus(S, "Contacted", CommentIcon, "contacted"),
+          submissionsByStatus(S, "Closed", CheckmarkCircleIcon, "closed"),
           S.divider(),
-          singletonItem(S, "formSettings", "Form Settings", FORM_SETTINGS_DOCUMENT_ID),
-        ])
-    )
+          submissionsByStatus(S, "All submissions", InboxIcon),
+          S.divider(),
+          singletonItem(S, "formSettings", "Email Notification Settings", CogIcon, FORM_SETTINGS_DOCUMENT_ID),
+        ]),
+    );
+
+const servicePagesItem = (S: StructureBuilder) =>
+  S.listItem()
+    .id("servicePages")
+    .title("Service Pages")
+    .icon(CaseIcon)
+    .child(
+      S.list()
+        .title("Service Pages")
+        .items([
+          S.documentTypeListItem("service").title("All service pages"),
+          S.divider(),
+          ...SERVICE_CATEGORIES.map((category) =>
+            S.listItem()
+              .id(`service-${category.value}`)
+              .title(category.title)
+              .icon(CaseIcon)
+              .child(
+                S.documentTypeList("service")
+                  .title(category.title)
+                  .filter('_type == "service" && category == $category')
+                  .params({ category: category.value })
+                  .defaultOrdering(byOrderThenTitle)
+                  .initialValueTemplates([
+                    S.initialValueTemplateItem("service-by-category", { category: category.value }),
+                  ]),
+              ),
+          ),
+        ]),
+    );
 
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title("Content")
+    .title("Licorne Website")
     .items([
       formSubmissionsItem(S),
       S.divider(),
-      ...singletonItems.map((item) => singletonItem(S, item.type, item.title)),
+      singletonItem(S, "homepage", "Homepage", HomeIcon),
+      singletonItem(S, "aboutPage", "About Page", InfoOutlineIcon),
+      servicePagesItem(S),
       S.divider(),
-      ...documentTypeItems.map((item) =>
-        S.documentTypeListItem(item.type).title(item.title)
-      ),
+      S.documentTypeListItem("testimonial").title("Testimonials").icon(BlockquoteIcon),
+      S.documentTypeListItem("teamMember").title("Team Members").icon(UsersIcon),
       S.divider(),
-      ...S.documentTypeListItems().filter(
-        (listItem) =>
-          !singletonTypes.includes(listItem.getId() as string) &&
-          !systemCreatedTypes.includes(listItem.getId() as string) &&
-          !documentTypeItems.some((doc) => doc.type === listItem.getId())
-      ),
-    ])
+      singletonItem(S, "navigation", "Navigation & Menus", MenuIcon),
+      ...S.documentTypeListItems().filter((listItem) => !structuredTypes.has(listItem.getId() ?? "")),
+    ]);

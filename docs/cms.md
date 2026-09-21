@@ -8,17 +8,32 @@ Versions: `next` 16.3, `sanity` 6.15, `next-sanity` 13.3, `@sanity/client`, `@sa
 
 Embedded at **`/studio`** (`app/(studio)/studio/[[...tool]]/page.tsx`). Local: http://localhost:3000/studio.
 
-Desk structure (`sanity/structure.ts`):
+Desk structure (`sanity/structure.ts`), top to bottom:
 
 | Item | Type | Drives |
 | --- | --- | --- |
-| Form Submissions | `formSubmission` documents + `formSettings` singleton | Lead log from every website form (New leads / All) and the notification inboxes. See `docs/forms.md` |
+| Leads & Form Submissions | `formSubmission` documents + `formSettings` singleton | Lead log from every website form, split into New / Contacted / Closed / All, plus "Email Notification Settings". See `docs/forms.md` |
 | Homepage | `homepage` singleton | Hero, About + stats, Services rows, Testimonials section settings (rows, speed, heading, button, hide) + testimonial refs, Team (refs, hide), FAQ (hide), SEO |
 | About Page | `aboutPage` singleton | Everything on `/about` |
-| Navigation & Menus | `navigation` singleton | **Single source for the service taxonomy**: header labels, links and button; Company Setup dropdown; Services cascading menu (categories + their links); Resources; footer (categories flagged "Show in footer" become columns); the whole `/services` listing page; the contact form's "Service of interest" options. The homepage service rows are separate (Homepage › Services) |
-| Service Pages | `service` documents | `/services/[slug]` — one document per page |
+| Service Pages | `service` documents | `/services/[slug]`. Opens to "All service pages" plus one list per category; creating from a category list pre-fills that category |
 | Testimonials | `testimonial` documents | Name, position, quote (no photos by client request) |
 | Team Members | `teamMember` documents | Name, optional role, photo; rendered with initials fallback until a photo is added. Currently Muhammad Usman Butt, Umair Butt, Fahd Bouazer, Gicelle Cinco (roles pending from client) |
+| Navigation & Menus | `navigation` singleton | **Single source for the service taxonomy**: header labels, links and button; Company Setup dropdown; Services cascading menu (categories + their links); Resources; footer (categories flagged "Show in footer" become columns); the whole `/services` listing page; the contact form's "Service of interest" options. The homepage service rows are separate (Homepage › Services) |
+
+### Editor experience conventions
+
+The Studio is written for non-technical editors. Keep these when adding fields:
+
+- **Never rename a field `name` for UX.** Change `title`/`description` only; renaming orphans existing data.
+- **Don't add a `name` to an anonymous array member** (About paragraphs, milestones, values). Existing items have no `_type`, so naming the member would mark them invalid.
+- Big documents use **field groups (tabs)**: Homepage (Hero, About, Services, Testimonials, Team, FAQ, SEO), About (Hero, Our story, Why us, Journey, Values, Commitment & CTA, SEO), Service (Page setup, Hero, Page sections, Call to action, SEO), Navigation (Header, Company Setup, Services, Resources, Footer).
+- Button label + link pairs sit side by side in `buttonFieldset` (2 columns). The URL hint lives on the fieldset and the link field uses `linkPathField(name, "Link", false)`; a field-level description would push that input lower than the label input.
+- Shared field builders live in `sanity/schemas/shared/fields.ts`: `eyebrowField`, `accentWordField`, `hideSectionField`, `imageAltField` (warns when an image has no alt text), `buttonFieldset`, `linkPathField` (URL must start with `/`, `#`, `https://`, `mailto:` or `tel:`), `sortOrderField`. Reuse them rather than redefining.
+- Service categories live in `sanity/schemas/shared/serviceCategories.ts` and feed both the schema dropdown and the Service Pages structure.
+- Every type and array item has an icon and a readable preview (e.g. stats show "50+ Companies formed", process steps "01 · Title").
+- SEO fields warn above 60 (title) / 160 (description) characters. These are warnings, not errors; they never block publishing.
+- Singletons (`homepage`, `aboutPage`, `navigation`, `formSettings`) only offer Publish, Discard changes and Restore; delete, duplicate and unpublish are removed in `sanity.config.ts`.
+- Icons come from `@sanity/icons` v5, which **only exports icons from subpaths**: `import { HomeIcon } from "@sanity/icons/Home"`. Importing from the package root type-checks but fails at runtime.
 
 Only wired types are registered in `sanity/schemas/index.ts`. Contact, How It Works, FAQ page, cost guide, free zones and business activities remain static. On `/services`, only the hero and the bottom CTA are static.
 
@@ -75,7 +90,7 @@ LEAD_NOTIFICATION_EMAIL=
 NEXT_PUBLIC_SITE_URL=
 ```
 
-CORS origins registered: `http://localhost:3000`, `http://localhost:3001`, `https://licorne-website.vercel.app`. Vercel project `licorne-website` (XMA Team) is linked via `.vercel/` and has all five env vars in production, preview and development. Add the production domain when known.
+CORS origins registered: `http://localhost:3000`, `http://localhost:3001`, `http://localhost:3005`, `https://licorne-website.vercel.app`. Vercel project `licorne-website` (XMA Team) is linked via `.vercel/` and has all five env vars in production, preview and development. Add the production domain when known.
 
 ## Homepage controls (from the Sep 18 meeting)
 
