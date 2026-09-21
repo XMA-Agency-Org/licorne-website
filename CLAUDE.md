@@ -110,6 +110,7 @@ All three forms (homepage CTA, service CTA, /contact) render `components/forms/L
 - Pushing to `main` deploys to Vercel automatically. ❌ I once said it didn't, based on an old `vercel ls` listing → ✅ trust the git integration; don't ask about deploying after a push.
 - Don't run `bun run build` unless asked. Verify with `bun run lint`, `bunx tsc --noEmit` and the dev server.
 - ❌ The homepage hero image was swapped without being asked → ✅ never change hero/background images unless the user explicitly asks. The hero is `home-atrium.png` (in Sanity).
+- ❌ Passing className to the child `<Link>` of `<NavigationMenuLink asChild>` → the shadcn focus/hover classes are stacked, not merged, and win (dark text after click) → ✅ put classes on `NavigationMenuLink` itself so `cn()` merges them. Use named groups (`group/menu-link`) inside the nav, because `NavigationMenuList` is itself a `group`.
 - Data migration tools must target explicit document paths. A generic "any object with `href`" walk once mistook nav categories for links and corrupted their `_type`. Always back up the doc and verify with a GROQ read after migrating.
 - Before running a full `bun run seed`, remember it replaces the homepage/about/navigation singletons and wipes Studio edits. Use targeted patches (`setIfMissing`, `--team-only`) for live content.
 

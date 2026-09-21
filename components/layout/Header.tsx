@@ -98,17 +98,16 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
   }, [])
 
   const navLinkStyles = cn(
-    "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors",
+    "inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-transparent focus:bg-transparent",
     isScrolled
-      ? "text-secondary hover:text-primary"
-      : "text-white hover:text-primary"
+      ? "text-secondary hover:text-primary focus:text-secondary"
+      : "text-white hover:text-primary focus:text-white"
   )
 
   const triggerStyles = cn(
-    "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent",
-    isScrolled
-      ? "text-secondary hover:text-primary data-[state=open]:text-primary"
-      : "text-white hover:text-primary data-[state=open]:text-primary"
+    "bg-transparent hover:bg-transparent focus:bg-transparent data-[state=open]:bg-transparent data-[state=open]:hover:bg-transparent data-[state=open]:focus:bg-transparent",
+    "hover:text-primary data-[state=open]:text-primary data-[state=open]:hover:text-primary data-[state=open]:focus:text-primary",
+    isScrolled ? "text-secondary focus:text-secondary" : "text-white focus:text-white"
   )
 
   return (
@@ -139,8 +138,8 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
           <NavigationMenu viewport={false} className="hidden lg:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuLink asChild>
-                  <Link href="/" className={navLinkStyles}>
+                <NavigationMenuLink asChild className={navLinkStyles}>
+                  <Link href="/">
                     Home
                   </Link>
                 </NavigationMenuLink>
@@ -154,12 +153,11 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
                   <ul className="w-[360px] p-3 bg-white space-y-1">
                     {companySetup.items.map((item) => (
                       <li key={item.href}>
-                        <NavigationMenuLink asChild>
+                        <NavigationMenuLink asChild className="group/menu-link block rounded-sm px-3 py-2.5 transition-colors hover:bg-base-50">
                           <Link
                             href={item.href}
-                            className="group block rounded-sm px-3 py-2.5 transition-colors hover:bg-base-50"
                           >
-                            <span className="block text-sm font-medium text-secondary group-hover:text-primary">
+                            <span className="block text-sm font-medium text-secondary group-hover/menu-link:text-primary">
                               {item.label}
                             </span>
                             {item.description && (
@@ -194,10 +192,9 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
                   <ul className="w-[300px] p-3 bg-white space-y-1">
                     {resourceLinks.map((item) => (
                       <li key={item.href}>
-                        <NavigationMenuLink asChild>
+                        <NavigationMenuLink asChild className="block rounded-sm px-3 py-2.5 text-sm font-medium text-secondary transition-colors hover:text-primary">
                           <Link
                             href={item.href}
-                            className="block rounded-sm px-3 py-2.5 text-sm font-medium text-secondary transition-colors hover:text-primary"
                           >
                             {item.label}
                           </Link>
@@ -210,8 +207,8 @@ export function Header({ navigation }: { navigation: SiteNavigation }) {
 
               {header.links.map((link) => (
                 <NavigationMenuItem key={link.href}>
-                  <NavigationMenuLink asChild>
-                    <Link href={link.href} className={navLinkStyles}>
+                  <NavigationMenuLink asChild className={navLinkStyles}>
+                    <Link href={link.href}>
                       {link.label}
                     </Link>
                   </NavigationMenuLink>

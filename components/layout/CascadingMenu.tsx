@@ -48,14 +48,13 @@ export function CascadingMenu({ categories }: { categories: NavCategory[] }) {
             transition={{ duration: 0.15, ease: "easeOut" }}
             className="space-y-1"
           >
-            <NavigationMenuLink asChild>
+            <NavigationMenuLink asChild className="group/menu-link mb-2 block rounded-sm px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-base-50">
               <Link
                 href={activeGroup.href}
-                className="group mb-2 block rounded-sm px-3 py-2.5 text-sm font-medium text-primary transition-colors hover:bg-base-50"
               >
                 <span className="flex items-center gap-2">
                   All {activeGroup.title}
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                  <ArrowRight className="size-4 transition-transform group-hover/menu-link:translate-x-0.5" />
                 </span>
                 <span className="mt-1 block font-normal text-xs leading-relaxed text-text-secondary">
                   {activeGroup.description}
@@ -63,10 +62,9 @@ export function CascadingMenu({ categories }: { categories: NavCategory[] }) {
               </Link>
             </NavigationMenuLink>
             {activeGroup.items.map((service) => (
-              <NavigationMenuLink key={service.href} asChild>
+              <NavigationMenuLink key={service.href} asChild className="block rounded-sm px-3 py-2.5 text-sm font-medium text-secondary transition-colors hover:text-primary">
                 <Link
                   href={service.href}
-                  className="block rounded-sm px-3 py-2.5 text-sm font-medium text-secondary transition-colors hover:text-primary"
                 >
                   {service.label}
                 </Link>
