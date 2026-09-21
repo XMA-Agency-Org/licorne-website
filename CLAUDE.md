@@ -107,6 +107,7 @@ All three forms (homepage CTA, service CTA, /contact) render `components/forms/L
 ## Workflow
 
 - Commit and push straight to `main` (the user's decision, Sep 21 2026). Don't push `staging`.
+- Pushing to `main` deploys to Vercel automatically. ❌ I once said it didn't, based on an old `vercel ls` listing → ✅ trust the git integration; don't ask about deploying after a push.
 - Don't run `bun run build` unless asked. Verify with `bun run lint`, `bunx tsc --noEmit` and the dev server.
 - Data migration tools must target explicit document paths. A generic "any object with `href`" walk once mistook nav categories for links and corrupted their `_type`. Always back up the doc and verify with a GROQ read after migrating.
 - Before running a full `bun run seed`, remember it replaces the homepage/about/navigation singletons and wipes Studio edits. Use targeted patches (`setIfMissing`, `--team-only`) for live content.
