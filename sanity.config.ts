@@ -5,7 +5,9 @@ import { structureTool } from "sanity/structure"
 import { visionTool } from "@sanity/vision"
 import { apiVersion, dataset, projectId, studioBasePath } from "./sanity/env"
 import { schemaTypes } from "./sanity/schemas"
-import { structure } from "./sanity/structure"
+import { singletonTypes, structure, systemCreatedTypes } from "./sanity/structure"
+
+const typesWithoutCreateButton = new Set([...singletonTypes, ...systemCreatedTypes])
 
 export default defineConfig({
   name: "licorne",
@@ -13,6 +15,10 @@ export default defineConfig({
   basePath: studioBasePath,
   projectId,
   dataset,
-  schema: { types: schemaTypes },
+  schema: {
+    types: schemaTypes,
+    templates: (templates) =>
+      templates.filter((template) => !typesWithoutCreateButton.has(template.schemaType)),
+  },
   plugins: [structureTool({ structure }), visionTool({ defaultApiVersion: apiVersion })],
 })

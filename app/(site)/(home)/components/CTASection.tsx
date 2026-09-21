@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowRight } from "lucide-react";
+import { LeadForm } from "@/components/forms/LeadForm";
 
 export function CTASection() {
   return (
@@ -70,77 +70,7 @@ export function CTASection() {
             className="bg-white p-8 lg:p-12 flex flex-col justify-center"
           >
             <h3 className="text-2xl text-secondary mb-6">Get in touch</h3>
-            <form className="space-y-5">
-              <div className="grid sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block font-secondary text-sm font-medium text-text-secondary mb-2">
-                    Full name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your full name"
-                    className="font-secondary w-full border border-base-200 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block font-secondary text-sm font-medium text-text-secondary mb-2">
-                    Phone number
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="+971"
-                    className="font-secondary w-full border border-base-200 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block font-secondary text-sm font-medium text-text-secondary mb-2">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="you@company.com"
-                  className="font-secondary w-full border border-base-200 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors"
-                />
-              </div>
-              <div>
-                <label className="block font-secondary text-sm font-medium text-text-secondary mb-2">
-                  Service of interest
-                </label>
-                <select
-                  name="service"
-                  className="font-secondary w-full border border-base-200 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors bg-white"
-                >
-                  <option>Mainland Company Setup</option>
-                  <option>Free Zone Company Setup</option>
-                  <option>Visa & Immigration</option>
-                  <option>PRO & Government Services</option>
-                  <option>Bank Account Opening</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              <div>
-                <label className="block font-secondary text-sm font-medium text-text-secondary mb-2">
-                  Message (optional)
-                </label>
-                <textarea
-                  name="message"
-                  rows={3}
-                  placeholder="Tell us about your business needs"
-                  className="font-secondary w-full border border-base-200 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="group w-full px-6 py-4 bg-primary text-white font-secondary font-medium rounded-sm hover:bg-secondary transition-colors flex items-center justify-center"
-              >
-                Book Free Consultation
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </form>
+            <LeadForm submitLabel="Book Free Consultation" />
           </motion.div>
         </div>
       </div>

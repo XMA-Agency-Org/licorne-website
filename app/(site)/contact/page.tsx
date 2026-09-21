@@ -2,10 +2,11 @@ import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import HeroImage from "@/public/images/heroes/home.jpg";
+import { LeadForm } from "@/components/forms/LeadForm";
 
 export const metadata = {
   title: "Contact Us | Licorne",
-  description: "Get in touch with Licorne for legal consultation and support.",
+  description: "Talk to Licorne about company setup, visas, licensing and banking in Dubai. Free consultation, reply within one business day.",
 };
 
 export default function ContactPage() {
@@ -13,7 +14,7 @@ export default function ContactPage() {
     <>
       <PageHero
         eyebrow="Contact"
-        title="Lets start a conversation"
+        title="Let's start a conversation"
         description="Tell us about your needs and our team will respond with the right guidance."
         image={HeroImage}
         imageAlt="Contact Licorne"
@@ -26,11 +27,11 @@ export default function ContactPage() {
             <div>
               <Eyebrow className="mb-6">Get in touch</Eyebrow>
               <h2 className="text-4xl lg:text-5xl mt-3 mb-6 leading-tight text-secondary">
-                Ready to discuss your legal needs
+                Ready to start your Dubai business?
               </h2>
               <p className="text-lg leading-relaxed text-text-secondary mb-10">
-                Share a brief summary of your request and we will connect you
-                with the right legal expert.
+                Share a brief summary of what you need and one of our business
+                setup advisors will get back to you within one business day.
               </p>
               <div className="space-y-6 text-text-secondary">
                 <div>
@@ -71,72 +72,7 @@ export default function ContactPage() {
               <h3 className="text-2xl text-secondary mb-6">
                 Send us a message
               </h3>
-              <form className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-text-secondary mb-2">
-                    Full name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Your full name"
-                    className="w-full border border-primary/20 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-secondary mb-2">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="you@company.com"
-                    className="w-full border border-primary/20 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-secondary mb-2">
-                    Phone number
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="+971"
-                    className="w-full border border-primary/20 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-secondary mb-2">
-                    Service of interest
-                  </label>
-                  <select
-                    name="service"
-                    className="w-full border border-primary/20 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary bg-white"
-                  >
-                    <option>Business Legal Consultation</option>
-                    <option>Dispute Resolution</option>
-                    <option>Licensing and Contracts</option>
-                    <option>Intellectual Property Protection</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-text-secondary mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    name="message"
-                    rows={5}
-                    placeholder="Tell us about your request"
-                    className="w-full border border-primary/20 rounded-sm px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full px-6 py-4 bg-primary text-white font-medium rounded-sm hover:bg-secondary transition-colors"
-                >
-                  Send message
-                </button>
-              </form>
+              <LeadForm layout="contact" submitLabel="Send message" />
             </div>
           </div>
         </div>

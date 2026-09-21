@@ -9,10 +9,12 @@ import link from "./objects/link"
 import service from "./documents/service"
 import testimonial from "./documents/testimonial"
 import teamMember from "./documents/teamMember"
+import formSubmission from "./documents/formSubmission"
 
 import homepage from "./singletons/homepage"
 import aboutPage from "./singletons/aboutPage"
 import navigation from "./singletons/navigation"
+import formSettings from "./singletons/formSettings"
 
 export const schemaTypes = [
   stat,
@@ -25,7 +27,9 @@ export const schemaTypes = [
   service,
   testimonial,
   teamMember,
+  formSubmission,
   homepage,
   aboutPage,
   navigation,
+  formSettings,
 ]

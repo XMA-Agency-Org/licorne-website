@@ -231,7 +231,7 @@ export function ServicePage({
                   </h3>
                   <p className="font-secondary text-accent-50/80 leading-relaxed mb-8">
                     {overview.expectationDescription ??
-                      "A practical legal partner focused on decision-ready insights, not just documents."}
+                      "One advisor who handles the paperwork, approvals and follow-ups so you can focus on your business."}
                   </p>
                   <StatsRow
                     stats={stats}
