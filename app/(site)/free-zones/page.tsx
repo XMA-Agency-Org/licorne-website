@@ -333,7 +333,7 @@ export default function FreeZonesPage() {
                 For consultancies and professional services
               </h3>
               <p className="text-gray-600 mb-4">
-                If you're a consultant, freelancer, or service business without physical
+                If you&apos;re a consultant, freelancer, or service business without physical
                 product needs, prioritize cost-effectiveness and visa flexibility.
               </p>
               <p className="text-primary font-medium">
@@ -402,8 +402,8 @@ export default function FreeZonesPage() {
             Not sure which free zone is right for you?
           </h2>
           <p className="text-white/80 max-w-2xl mx-auto mb-8">
-            We've helped 500+ businesses choose the optimal free zone. Book a free
-            consultation and we'll recommend the best option based on your specific
+            We&apos;ve helped 500+ businesses choose the optimal free zone. Book a free
+            consultation and we&apos;ll recommend the best option based on your specific
             situation — business type, budget, visa needs, and growth plans.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

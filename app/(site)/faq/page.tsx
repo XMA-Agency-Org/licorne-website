@@ -270,7 +270,7 @@ export default function FAQPage() {
             Still have questions?
           </h2>
           <p className="text-white/80 max-w-2xl mx-auto mb-8">
-            Book a free 30-minute consultation. We'll answer your specific questions
+            Book a free 30-minute consultation. We&apos;ll answer your specific questions
             and provide a clear recommendation for your situation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

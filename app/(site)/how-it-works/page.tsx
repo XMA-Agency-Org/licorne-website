@@ -190,7 +190,7 @@ export default function HowItWorksPage() {
             </h2>
             <p className="mt-6 text-gray-600 leading-relaxed">
               Setting up a Dubai company involves multiple authorities, documents, and
-              approvals. We've systematized the process so you always know what's
+              approvals. We&apos;ve systematized the process so you always know what&apos;s
               happening and what comes next.
             </p>
           </div>
@@ -305,7 +305,7 @@ export default function HowItWorksPage() {
                   <div>
                     <h3 className="text-secondary">Provide basic documents</h3>
                     <p className="text-gray-600 text-sm mt-1">
-                      Passport copy, photo, proof of address. We guide you on exactly what's needed.
+                      Passport copy, photo, proof of address. We guide you on exactly what&apos;s needed.
                     </p>
                   </div>
                 </div>
@@ -356,18 +356,18 @@ export default function HowItWorksPage() {
                   follow-ups, issue resolution, and coordination across multiple departments.
                 </p>
                 <p>
-                  You shouldn't need to visit any government office or navigate any portal.
+                  You shouldn&apos;t need to visit any government office or navigate any portal.
                   Our PRO team handles all physical submissions and tracks all applications.
                 </p>
                 <p>
-                  We keep you informed with regular updates. You'll know what's happening
+                  We keep you informed with regular updates. You&apos;ll know what&apos;s happening
                   at every stage without having to manage any of it.
                 </p>
                 <div className="bg-accent-50 p-6 rounded-sm mt-6">
                   <h4 className="text-secondary">Our commitment</h4>
                   <p className="text-sm mt-2">
                     If something gets stuck or rejected, we handle it. Our fees include
-                    resolution of normal complications — you don't pay extra because a
+                    resolution of normal complications — you don&apos;t pay extra because a
                     government clerk requested additional documents.
                   </p>
                 </div>
@@ -406,7 +406,7 @@ export default function HowItWorksPage() {
             Ready to start?
           </h2>
           <p className="text-white/80 max-w-2xl mx-auto mb-8">
-            Book a free consultation. We'll discuss your business, recommend the
+            Book a free consultation. We&apos;ll discuss your business, recommend the
             right structure, and give you a clear timeline and cost estimate.
             No obligations, no pressure.
           </p>

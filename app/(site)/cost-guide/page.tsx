@@ -289,7 +289,7 @@ export default function CostGuidePage() {
               Realistic Setup Scenarios
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-              Here's what different business types typically pay, including our service fees.
+              Here&apos;s what different business types typically pay, including our service fees.
             </p>
           </div>
 
@@ -340,21 +340,21 @@ export default function CostGuidePage() {
                 <h3 className="text-xl text-secondary">Choose the right free zone</h3>
                 <p className="text-gray-600 mt-2">
                   IFZA and Meydan cost significantly less than DMCC for the same activities.
-                  Unless you specifically need DMCC's trading infrastructure or prestige, a
+                  Unless you specifically need DMCC&apos;s trading infrastructure or prestige, a
                   budget-friendly zone may serve you equally well.
                 </p>
               </div>
               <div>
                 <h3 className="text-xl text-secondary">Start with fewer visas</h3>
                 <p className="text-gray-600 mt-2">
-                  Don't pay for visa packages you won't use immediately. Most setups allow
+                  Don&apos;t pay for visa packages you won&apos;t use immediately. Most setups allow
                   adding visas later. Start with what you need and expand when your team grows.
                 </p>
               </div>
               <div>
                 <h3 className="text-xl text-secondary">Use virtual/flexi office</h3>
                 <p className="text-gray-600 mt-2">
-                  Physical offices are expensive. If you don't need daily presence or client
+                  Physical offices are expensive. If you don&apos;t need daily presence or client
                   visits, a flexi desk or virtual address saves AED 20,000-50,000 annually.
                 </p>
               </div>
@@ -376,7 +376,7 @@ export default function CostGuidePage() {
             Get an exact quote for your business
           </h2>
           <p className="text-white/80 max-w-2xl mx-auto mb-8">
-            Every business is different. Share your requirements and we'll provide a
+            Every business is different. Share your requirements and we&apos;ll provide a
             detailed, transparent quote with no hidden fees — usually within 24 hours.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

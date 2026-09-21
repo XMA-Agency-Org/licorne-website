@@ -241,12 +241,12 @@ export default function BusinessActivitiesPage() {
             </h2>
             <div className="mt-6 space-y-4 text-gray-600 leading-relaxed">
               <p>
-                Every UAE trade license lists specific "activities" that define what your
+                Every UAE trade license lists specific &quot;activities&quot; that define what your
                 company can legally do. Activities are standardized codes maintained by
                 DED (for mainland) or individual free zone authorities.
               </p>
               <p>
-                Choosing the right activities matters: too narrow and you can't serve all
+                Choosing the right activities matters: too narrow and you can&apos;t serve all
                 your customers; too broad and you might face higher fees or unnecessary
                 approvals. Most businesses need 3-6 well-chosen activities.
               </p>
@@ -391,7 +391,7 @@ export default function BusinessActivitiesPage() {
                 <h3 className="text-xl text-secondary">3. Match to official codes</h3>
                 <p className="text-gray-600 mt-2">
                   Your description needs to map to official DED or free zone activity codes.
-                  "Digital marketing" might map to multiple activities; we help find the right fit.
+                  &quot;Digital marketing&quot; might map to multiple activities; we help find the right fit.
                 </p>
               </div>
               <div>
@@ -419,7 +419,7 @@ export default function BusinessActivitiesPage() {
             Not sure which activities you need?
           </h2>
           <p className="text-white/80 max-w-2xl mx-auto mb-8">
-            Describe your business and we'll recommend the right activities, check
+            Describe your business and we&apos;ll recommend the right activities, check
             approval requirements, and ensure your license covers everything you need.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
