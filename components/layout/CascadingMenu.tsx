@@ -14,14 +14,14 @@ export function CascadingMenu({ categories }: { categories: NavCategory[] }) {
     categories.find((category) => category.title === activeCategory) ?? categories[0]
 
   return (
-    <div className="flex min-h-[300px] w-[640px] bg-white">
-      <div className="w-[220px] border-r border-base-200 py-2">
+    <div className="flex min-h-[300px] w-[700px] bg-white">
+      <div className="w-[280px] shrink-0 border-r border-base-200 py-2">
         {categories.map(({ title }) => (
           <button
             key={title}
             onMouseEnter={() => setActiveCategory(title)}
             className={cn(
-              "flex w-full items-center justify-between px-4 py-3 text-sm font-medium transition-colors",
+              "flex w-full items-center justify-between gap-3 whitespace-nowrap px-4 py-3 text-left text-sm font-medium transition-colors",
               activeCategory === title
                 ? "border-l-2 border-primary bg-base-50 text-primary"
                 : "border-l-2 border-transparent text-secondary hover:bg-base-50 hover:text-primary"
@@ -30,7 +30,7 @@ export function CascadingMenu({ categories }: { categories: NavCategory[] }) {
             {title}
             <ChevronRight
               className={cn(
-                "size-4 transition-colors",
+                "size-4 shrink-0 transition-colors",
                 activeCategory === title ? "text-primary" : "text-base-400"
               )}
             />
@@ -38,7 +38,7 @@ export function CascadingMenu({ categories }: { categories: NavCategory[] }) {
         ))}
       </div>
 
-      <div className="w-[420px] p-4">
+      <div className="flex-1 p-4">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeGroup.title}
