@@ -214,7 +214,7 @@ export default function FreeZonesPage() {
 
           <div className="grid lg:grid-cols-3 gap-6 mb-16">
             <div className="bg-white border border-primary/20 rounded-sm p-6">
-              <div className="text-4xl text-primary font-primary">40+</div>
+              <div className="text-4xl text-primary font-primary">20+</div>
               <div className="text-secondary mt-1">Free zones in Dubai</div>
               <p className="text-gray-600 text-sm mt-2">
                 Each with unique benefits, costs, and target industries
@@ -402,7 +402,7 @@ export default function FreeZonesPage() {
             Not sure which free zone is right for you?
           </h2>
           <p className="text-white/80 max-w-2xl mx-auto mb-8">
-            We&apos;ve helped 500+ businesses choose the optimal free zone. Book a free
+            We&apos;ve helped 50+ businesses choose the optimal free zone. Book a free
             consultation and we&apos;ll recommend the best option based on your specific
             situation — business type, budget, visa needs, and growth plans.
           </p>

@@ -145,7 +145,7 @@ const faqs = [
   {
     question: "What happens if something goes wrong?",
     answer:
-      "We've done this 500+ times — most issues are predictable and manageable. If authorities request additional documents or reject initial applications, we handle it. Our fees cover resolution of normal complications.",
+      "We've done this 50+ times — most issues are predictable and manageable. If authorities request additional documents or reject initial applications, we handle it. Our fees cover resolution of normal complications.",
   },
 ];
 

@@ -185,7 +185,7 @@ const faqCategories = [
       {
         question: "What if something goes wrong during setup?",
         answer:
-          "We've done 500+ setups — most issues are predictable and manageable. Rejected applications, additional document requests, authority delays — these happen and we handle them. Our fees include resolution of normal complications. Truly exceptional situations are discussed case-by-case, but we don't leave clients stuck.",
+          "We've guided 50+ setups — most issues are predictable and manageable. Rejected applications, additional document requests, authority delays — these happen and we handle them. Our fees include resolution of normal complications. Truly exceptional situations are discussed case-by-case, but we don't leave clients stuck.",
       },
     ],
   },
