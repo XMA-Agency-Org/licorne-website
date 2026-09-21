@@ -90,7 +90,7 @@ export const homepage = {
     primaryCtaHref: "/contact",
     secondaryCtaLabel: "Explore Services",
     secondaryCtaHref: "#services",
-    bgImage: "home-skyline.jpg",
+    bgImage: "home-atrium.png",
   },
   about: {
     eyebrow: "About Licorne",

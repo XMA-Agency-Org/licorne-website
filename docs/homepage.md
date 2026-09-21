@@ -4,7 +4,7 @@ Route: `app/(site)/page.tsx`, sections in `app/(site)/(home)/components/`.
 
 | Section | Notes |
 | --- | --- |
-| `HeroSection` | Background is `public/images/heroes/home-skyline.jpg` (Dubai skyline at golden hour, AI-generated Sept 2026). Client asked that the hero not look "legal"/courthouse-like. |
+| `HeroSection` | Background is the original atrium image, `public/images/heroes/home-atrium.png`, set live in Sanity (Homepage › Hero › Background image). The AI-generated Dubai skyline that briefly replaced it was reverted on Sep 21, 2026 at the user's request. Don't change the hero image unless explicitly asked. |
 | `AboutSection` | Copy and stats come from the client's content doc: "We Make Dubai Accessible", 50+ / 10+ / 98% / 72h. |
 | `ServicesSection` | Six rows built from `lib/navigation.ts`: Company Setup, License Services, Visa & Immigration, Finance & Banking, PRO & Government Services, Notary Services. Each row lists its sub-services as pill links and ends with a "View All Services" button. |
 | `WhyChooseUsSection` | Static. |

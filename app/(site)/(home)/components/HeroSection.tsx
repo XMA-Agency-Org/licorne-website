@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import DefaultHeroImage from "@/public/images/heroes/home-skyline.jpg";
+import DefaultHeroImage from "@/public/images/heroes/home-atrium.png";
 import { urlFor } from "@/sanity/lib/image";
 import type { HomepageHero } from "../_types/homepage";
 
