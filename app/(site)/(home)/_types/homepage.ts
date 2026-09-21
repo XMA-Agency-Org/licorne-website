@@ -5,5 +5,6 @@ export type HomepageHero = HomepageData["hero"];
 export type HomepageAbout = HomepageData["about"];
 export type HomepageServices = HomepageData["services"];
 export type HomepageTestimonials = HomepageData["testimonials"];
+export type HomepageTestimonialsSection = HomepageData["testimonialsSection"];
 export type HomepageTeam = HomepageData["team"];
 export type HomepageFaq = HomepageData["faq"];

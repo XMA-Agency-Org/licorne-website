@@ -15,6 +15,15 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: sanity/schema.json
+export type FormSettings = {
+  _id: string;
+  _type: "formSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  notificationRecipients?: Array<string>;
+};
+
 export type Navigation = {
   _id: string;
   _type: "navigation";
@@ -245,12 +254,23 @@ export type Homepage = {
       _key: string;
     }>;
   };
+  testimonialsSection?: {
+    hidden?: boolean;
+    eyebrow?: string;
+    title?: string;
+    titleAccent?: string;
+    rows?: 1 | 2;
+    speed?: number;
+    ctaLabel?: string;
+    ctaHref?: string;
+  };
   testimonials?: Array<
     {
       _key: string;
     } & TestimonialReference
   >;
   team?: {
+    hidden?: boolean;
     eyebrow?: string;
     title?: string;
     members?: Array<
@@ -260,6 +280,7 @@ export type Homepage = {
     >;
   };
   faq?: {
+    hidden?: boolean;
     eyebrow?: string;
     title?: string;
     items?: Array<
@@ -269,6 +290,23 @@ export type Homepage = {
     >;
   };
   seo?: Seo;
+};
+
+export type FormSubmission = {
+  _id: string;
+  _type: "formSubmission";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  status?: "new" | "contacted" | "closed";
+  name?: string;
+  email?: string;
+  phone?: string;
+  service?: string;
+  message?: string;
+  sourcePage?: string;
+  submittedAt?: string;
+  emailNotified?: boolean;
 };
 
 export type TeamMember = {
@@ -511,6 +549,7 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | FormSettings
   | Navigation
   | SanityImageAssetReference
   | AboutPage
@@ -521,6 +560,7 @@ export type AllSanitySchemaTypes =
   | TestimonialReference
   | TeamMemberReference
   | Homepage
+  | FormSubmission
   | TeamMember
   | Testimonial
   | Service
@@ -579,7 +619,7 @@ export type NavigationQueryResult = {
 
 // Source: sanity/lib/queries.ts
 // Variable: homepageQuery
-// Query: *[_type == "homepage"][0]{  hero{ ..., bgImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },  about{ ..., image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]{ label, href, description } } },  testimonials[]->{ _id, author, position, text },  team{ eyebrow, title, members[]->{ _id, name, role, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } } },  faq{ eyebrow, title, items[]{ question, answer } },  seo}
+// Query: *[_type == "homepage"][0]{  hero{ ..., bgImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },  about{ ..., image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]{ label, href, description } } },  testimonialsSection{ hidden, eyebrow, title, titleAccent, rows, speed, ctaLabel, ctaHref },  testimonials[]->{ _id, author, position, text },  team{ hidden, eyebrow, title, members[]->{ _id, name, role, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } } },  faq{ hidden, eyebrow, title, items[]{ question, answer } },  seo}
 export type HomepageQueryResult = {
   hero: {
     headline?: string;
@@ -646,6 +686,16 @@ export type HomepageQueryResult = {
       }> | null;
     }> | null;
   } | null;
+  testimonialsSection: {
+    hidden: boolean | null;
+    eyebrow: string | null;
+    title: string | null;
+    titleAccent: string | null;
+    rows: 1 | 2 | null;
+    speed: number | null;
+    ctaLabel: string | null;
+    ctaHref: string | null;
+  } | null;
   testimonials: Array<{
     _id: string;
     author: string | null;
@@ -653,6 +703,7 @@ export type HomepageQueryResult = {
     text: string | null;
   }> | null;
   team: {
+    hidden: boolean | null;
     eyebrow: string | null;
     title: string | null;
     members: Array<{
@@ -676,6 +727,7 @@ export type HomepageQueryResult = {
     }> | null;
   } | null;
   faq: {
+    hidden: boolean | null;
     eyebrow: string | null;
     title: string | null;
     items: Array<{
@@ -685,6 +737,14 @@ export type HomepageQueryResult = {
   } | null;
   seo: Seo | null;
 } | null;
+
+// Source: sanity/lib/queries.ts
+// Variable: sitemapServicesQuery
+// Query: *[_type == "service" && defined(slug.current)]{  "slug": slug.current,  _updatedAt}
+export type SitemapServicesQueryResult = Array<{
+  slug: string | null;
+  _updatedAt: string;
+}>;
 
 // Source: sanity/lib/queries.ts
 // Variable: serviceSlugsQuery
@@ -875,7 +935,8 @@ export type AboutPageQueryResult = {
 declare global {
   interface SanityQueries {
     '*[_type == "navigation"][0]{\n  companySetup{ href, description, items[]{ label, href, description } },\n  serviceCategories[]{ title, href, description, items[]{ label, href, description } },\n  resourceLinks[]{ label, href, description },\n  footer{ description, companyLinks[]{ label, href, description } }\n}': NavigationQueryResult;
-    '*[_type == "homepage"][0]{\n  hero{ ..., bgImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  about{ ..., image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]{ label, href, description } } },\n  testimonials[]->{ _id, author, position, text },\n  team{ eyebrow, title, members[]->{ _id, name, role, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } } },\n  faq{ eyebrow, title, items[]{ question, answer } },\n  seo\n}': HomepageQueryResult;
+    '*[_type == "homepage"][0]{\n  hero{ ..., bgImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  about{ ..., image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  services{ eyebrow, title, items[]{ number, title, description, href, subItems[]{ label, href, description } } },\n  testimonialsSection{ hidden, eyebrow, title, titleAccent, rows, speed, ctaLabel, ctaHref },\n  testimonials[]->{ _id, author, position, text },\n  team{ hidden, eyebrow, title, members[]->{ _id, name, role, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } } },\n  faq{ hidden, eyebrow, title, items[]{ question, answer } },\n  seo\n}': HomepageQueryResult;
+    '*[_type == "service" && defined(slug.current)]{\n  "slug": slug.current,\n  _updatedAt\n}': SitemapServicesQueryResult;
     '*[_type == "service" && defined(slug.current)]{\n  "slug": slug.current\n}': ServiceSlugsQueryResult;
     '*[_type == "service" && slug.current == $slug][0]{\n  title,\n  "slug": slug.current,\n  category,\n  hero{ title, description, imageAlt, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  overview{ eyebrow, title, description, highlights, expectationTitle, expectationDescription },\n  stats[]{ value, label },\n  deliverables{ eyebrow, title, items[]{ anchor, title, description } },\n  process{ eyebrow, title, items[]{ step, title, description } },\n  faqs{ eyebrow, title, items[]{ question, answer } },\n  cta{ title, description, primaryLabel, primaryHref, secondaryLabel, secondaryHref },\n  seo{ title, description, keywords, ogImage{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } }\n}': ServiceBySlugQueryResult;
     '*[_type == "aboutPage"][0]{\n  hero{ eyebrow, title, description, imageAlt, image{ ..., asset->{ _id, url, metadata { lqip, dimensions } } } },\n  story{ eyebrow, title, paragraphs[]{ text } },\n  whyClients{ title, description, items },\n  stats[]{ value, label },\n  journey{ eyebrow, title, milestones[]{ year, title, description } },\n  values{ eyebrow, title, items[]{ title, description } },\n  commitment{ eyebrow, title, paragraphs[]{ text } },\n  cta{ title, description, primaryLabel, primaryHref, secondaryLabel, secondaryHref },\n  seo{ title, description }\n}': AboutPageQueryResult;

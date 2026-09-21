@@ -23,9 +23,10 @@ const client = createClient({
 });
 
 const heroesDir = join(process.cwd(), "public/images/heroes");
+const teamImagesDir = join(process.cwd(), "sanity/seed/images/team");
 const uploadedImages = new Map<string, string>();
 
-async function imageRef(fileName: string) {
+async function imageRef(fileName: string, directory = heroesDir) {
   const cached = uploadedImages.get(fileName);
   if (cached) return { _type: "image", asset: { _type: "reference", _ref: cached } };
 
@@ -35,7 +36,7 @@ async function imageRef(fileName: string) {
   );
   let assetId = existing;
   if (!assetId) {
-    const filePath = join(heroesDir, fileName);
+    const filePath = join(directory, fileName);
     if (!existsSync(filePath)) throw new Error(`Missing image ${filePath}`);
     const asset = await client.assets.upload("image", readFileSync(filePath), {
       filename: basename(filePath),
@@ -111,10 +112,37 @@ async function seedTestimonials() {
 async function seedTeam() {
   console.log("Team members");
   const ids: string[] = [];
-  for (const member of teamMembers) {
-    ids.push(await upsertByField("teamMember", "name", member.name, member));
+  for (const { image, ...member } of teamMembers) {
+    const doc = { ...member, image: await imageRef(image, teamImagesDir) };
+    ids.push(await upsertByField("teamMember", "name", member.name, doc));
+    console.log(`  ${member.name}`);
   }
   return ids;
+}
+
+async function removeTeamMembersNotIn(keptIds: string[]) {
+  const staleIds = await client.fetch<string[]>(
+    `*[_type == "teamMember" && !(_id in $keptIds) && !(_id in path("drafts.**"))]._id`,
+    { keptIds },
+  );
+  for (const id of staleIds) {
+    await client.delete(id);
+    console.log(`  removed stale team member ${id}`);
+  }
+}
+
+async function linkTeamOnHomepage(teamIds: string[]) {
+  await client
+    .patch("homepage")
+    .set({ "team.members": teamIds.map((id) => ({ _type: "reference", _ref: id, _key: newKey() })) })
+    .commit();
+  console.log("  homepage.team.members updated");
+}
+
+async function seedTeamOnly() {
+  const teamIds = await seedTeam();
+  await linkTeamOnHomepage(teamIds);
+  await removeTeamMembersNotIn(teamIds);
 }
 
 async function seedSingletons(testimonialIds: string[], teamIds: string[]) {
@@ -148,10 +176,16 @@ async function seedSingletons(testimonialIds: string[], teamIds: string[]) {
 }
 
 async function main() {
+  if (process.argv.includes("--team-only")) {
+    await seedTeamOnly();
+    console.log("Done");
+    return;
+  }
   await seedServices();
   const testimonialIds = await seedTestimonials();
   const teamIds = await seedTeam();
   await seedSingletons(testimonialIds, teamIds);
+  await removeTeamMembersNotIn(teamIds);
   console.log("Done");
 }
 

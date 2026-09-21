@@ -83,7 +83,9 @@ export function TeamSection({ team }: { team: HomepageTeam }) {
             <div key={member.name} className="group cursor-pointer">
               <MemberAvatar member={member} />
               <h3 className="text-3xl text-center text-white mb-1">{member.name}</h3>
-              <p className="text-primary text-center font-medium">{member.role}</p>
+              {member.role && (
+                <p className="text-primary text-center font-medium">{member.role}</p>
+              )}
             </div>
           ))}
         </div>

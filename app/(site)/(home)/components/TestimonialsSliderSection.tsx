@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import { Quote } from "lucide-react";
 import { ScrollVelocityContainer, ScrollVelocityRow } from "@/components/ui/ScrollVelocity";
-import type { HomepageTestimonials } from "../_types/homepage";
+import type { HomepageTestimonials, HomepageTestimonialsSection } from "../_types/homepage";
 
 type Testimonial = { author: string; position: string; text: string };
 
@@ -30,6 +31,22 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
     position: "CEO, Fintech Startup",
   },
 ];
+
+const DEFAULT_SETTINGS = {
+  eyebrow: "Testimonials",
+  title: "Trusted by Entrepreneurs",
+  titleAccent: "Worldwide",
+  rows: 1,
+  speed: 3,
+  ctaLabel: "Start Your Journey",
+  ctaHref: "/contact",
+};
+
+function splitIntoRows<T>(items: T[], rowCount: number): T[][] {
+  const rows: T[][] = Array.from({ length: rowCount }, () => []);
+  items.forEach((item, index) => rows[index % rowCount].push(item));
+  return rows.filter((row) => row.length);
+}
 
 const StarIcon = () => (
   <svg
@@ -73,8 +90,10 @@ const TestimonialCard = ({
 );
 
 export function TestimonialsSliderSection({
+  settings,
   testimonials,
 }: {
+  settings: HomepageTestimonialsSection;
   testimonials: HomepageTestimonials;
 }) {
   const cmsTestimonials = (testimonials ?? [])
@@ -85,6 +104,13 @@ export function TestimonialsSliderSection({
       text: item.text as string,
     }));
   const items = cmsTestimonials.length ? cmsTestimonials : DEFAULT_TESTIMONIALS;
+  const eyebrow = settings?.eyebrow ?? DEFAULT_SETTINGS.eyebrow;
+  const title = settings?.title ?? DEFAULT_SETTINGS.title;
+  const titleAccent = settings?.titleAccent ?? DEFAULT_SETTINGS.titleAccent;
+  const speed = settings?.speed ?? DEFAULT_SETTINGS.speed;
+  const ctaLabel = settings?.ctaLabel ?? DEFAULT_SETTINGS.ctaLabel;
+  const ctaHref = settings?.ctaHref ?? DEFAULT_SETTINGS.ctaHref;
+  const rows = splitIntoRows(items, settings?.rows ?? DEFAULT_SETTINGS.rows);
 
   return (
     <section className="py-24 lg:py-32 relative overflow-hidden">
@@ -104,11 +130,11 @@ export function TestimonialsSliderSection({
       <div className="max-w-7xl mx-auto px-6 relative z-10 mb-16">
         <div className="text-center">
           <p className="text-primary border-b w-fit mx-auto p-2 mb-4 font-semibold text-sm uppercase tracking-wider">
-            Testimonials
+            {eyebrow}
           </p>
           <h2 className="text-4xl lg:text-6xl text-secondary mt-3 max-w-3xl mx-auto leading-tight text-balance">
-            Trusted by Entrepreneurs{" "}
-            <span className="text-primary font-serif">Worldwide</span>
+            {title}{" "}
+            {titleAccent && <span className="text-primary font-serif">{titleAccent}</span>}
           </h2>
         </div>
       </div>
@@ -116,11 +142,18 @@ export function TestimonialsSliderSection({
       {/* Smooth Scroll Velocity Slider */}
       <div className="mb-16 relative">
         <ScrollVelocityContainer className="w-full">
-          <ScrollVelocityRow baseVelocity={3} direction={1} className="py-4">
-            {items.map((testimonial) => (
-              <TestimonialCard key={testimonial.author} testimonial={testimonial} />
-            ))}
-          </ScrollVelocityRow>
+          {rows.map((rowItems, rowIndex) => (
+            <ScrollVelocityRow
+              key={rowIndex}
+              baseVelocity={speed}
+              direction={rowIndex % 2 === 0 ? 1 : -1}
+              className="py-4"
+            >
+              {rowItems.map((testimonial) => (
+                <TestimonialCard key={testimonial.author} testimonial={testimonial} />
+              ))}
+            </ScrollVelocityRow>
+          ))}
         </ScrollVelocityContainer>
 
         {/* Gradient overlays */}
@@ -131,10 +164,10 @@ export function TestimonialsSliderSection({
       {/* CTA Button */}
       <div className="text-center relative z-10">
         <Link
-          href="/contact"
-          className="inline-flex items-center px-8 py-4 bg-primary text-white hover:bg-secondary transition-all duration-300 font-medium rounded-sm"
+          href={ctaHref}
+          className={buttonVariants({ className: "px-8" })}
         >
-          Start Your Journey
+          {ctaLabel}
         </Link>
       </div>
     </section>

@@ -59,10 +59,10 @@ export const testimonials = [
 ];
 
 export const teamMembers = [
-  { name: "Artur Kopp", role: "Senior Partner", order: 1 },
-  { name: "Christine Hohmann", role: "Senior Partner", order: 2 },
-  { name: "Jutta Limbach", role: "Senior Partner", order: 3 },
-  { name: "Susanne Baer", role: "Senior Partner", order: 4 },
+  { name: "Muhammad Usman Butt", image: "muhammad-usman-butt.jpeg", order: 1 },
+  { name: "Umair Butt", image: "umair-butt.jpeg", order: 2 },
+  { name: "Fahd Bouazer", image: "fahd-bouazer.jpeg", order: 3 },
+  { name: "Gicelle Cinco", image: "gicelle-cinco.jpeg", order: 4 },
 ];
 
 export const homepage = {
@@ -148,6 +148,16 @@ export const homepage = {
         subItems: stripIcons(SERVICES["Notary Services"].items),
       },
     ].map((item) => ({ ...item, _type: "serviceRow" })),
+  },
+  testimonialsSection: {
+    hidden: false,
+    eyebrow: "Testimonials",
+    title: "Trusted by Entrepreneurs",
+    titleAccent: "Worldwide",
+    rows: 1,
+    speed: 3,
+    ctaLabel: "Start Your Journey",
+    ctaHref: "/contact",
   },
   team: {
     eyebrow: "Our Team",

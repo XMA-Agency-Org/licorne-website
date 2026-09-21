@@ -84,7 +84,48 @@ export default defineType({
       ],
     }),
     defineField({
+      name: "testimonialsSection",
+      title: "Testimonials section",
+      type: "object",
+      options: { collapsible: true },
+      fields: [
+        defineField({
+          name: "hidden",
+          title: "Hide this section",
+          type: "boolean",
+          initialValue: false,
+        }),
+        defineField({ name: "eyebrow", type: "string" }),
+        defineField({ name: "title", type: "string" }),
+        defineField({
+          name: "titleAccent",
+          title: "Title accent word",
+          description: "Rendered in the serif accent style after the title",
+          type: "string",
+        }),
+        defineField({
+          name: "rows",
+          title: "Number of scrolling rows",
+          description: "Use 1 row for up to ~6 testimonials, 2 rows for more.",
+          type: "number",
+          options: { list: [1, 2], layout: "radio", direction: "horizontal" },
+          initialValue: 1,
+        }),
+        defineField({
+          name: "speed",
+          title: "Scroll speed",
+          description: "1 is slow, 10 is fast.",
+          type: "number",
+          initialValue: 3,
+          validation: (rule) => rule.min(1).max(10),
+        }),
+        defineField({ name: "ctaLabel", title: "Button label", type: "string" }),
+        defineField({ name: "ctaHref", title: "Button link", type: "string" }),
+      ],
+    }),
+    defineField({
       name: "testimonials",
+      description: "Testimonials to show, in order. Manage their text under Testimonials.",
       type: "array",
       of: [defineArrayMember({ type: "reference", to: [{ type: "testimonial" }] })],
     }),
@@ -92,6 +133,12 @@ export default defineType({
       name: "team",
       type: "object",
       fields: [
+        defineField({
+          name: "hidden",
+          title: "Hide this section",
+          type: "boolean",
+          initialValue: false,
+        }),
         defineField({ name: "eyebrow", type: "string" }),
         defineField({ name: "title", type: "string" }),
         defineField({
@@ -105,6 +152,12 @@ export default defineType({
       name: "faq",
       type: "object",
       fields: [
+        defineField({
+          name: "hidden",
+          title: "Hide this section",
+          type: "boolean",
+          initialValue: false,
+        }),
         defineField({ name: "eyebrow", type: "string" }),
         defineField({ name: "title", type: "string" }),
         defineField({

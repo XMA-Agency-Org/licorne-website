@@ -28,9 +28,14 @@ export default async function LicornePage() {
       <AboutSection about={data?.about ?? null} />
       <ServicesSection services={data?.services ?? null} />
       <WhyChooseUsSection />
-      <TestimonialsSliderSection testimonials={data?.testimonials ?? null} />
-      <TeamSection team={data?.team ?? null} />
-      <FAQSection faq={data?.faq ?? null} />
+      {!data?.testimonialsSection?.hidden && (
+        <TestimonialsSliderSection
+          settings={data?.testimonialsSection ?? null}
+          testimonials={data?.testimonials ?? null}
+        />
+      )}
+      {!data?.team?.hidden && <TeamSection team={data?.team ?? null} />}
+      {!data?.faq?.hidden && <FAQSection faq={data?.faq ?? null} />}
       <CTASection />
     </>
   );

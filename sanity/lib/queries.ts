@@ -14,10 +14,16 @@ export const homepageQuery = defineQuery(`*[_type == "homepage"][0]{
   hero{ ..., bgImage${imageProjection} },
   about{ ..., image${imageProjection} },
   services{ eyebrow, title, items[]{ number, title, description, href, subItems[]${linkProjection} } },
+  testimonialsSection{ hidden, eyebrow, title, titleAccent, rows, speed, ctaLabel, ctaHref },
   testimonials[]->{ _id, author, position, text },
-  team{ eyebrow, title, members[]->{ _id, name, role, image${imageProjection} } },
-  faq{ eyebrow, title, items[]{ question, answer } },
+  team{ hidden, eyebrow, title, members[]->{ _id, name, role, image${imageProjection} } },
+  faq{ hidden, eyebrow, title, items[]{ question, answer } },
   seo
+}`);
+
+export const sitemapServicesQuery = defineQuery(`*[_type == "service" && defined(slug.current)]{
+  "slug": slug.current,
+  _updatedAt
 }`);
 
 export const serviceSlugsQuery = defineQuery(`*[_type == "service" && defined(slug.current)]{
